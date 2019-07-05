@@ -1,0 +1,7344 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<head>
+<title>Spark Knowledge Discovery</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+
+<style>	
+
+body {
+  background: #A3BEE2;
+} 
+
+.link {
+  stroke: black;
+  stroke-width: 8px;
+  cursor: pointer;
+}
+
+.node {
+  fill: black;
+  fill-opacity: 0.95;
+  stroke: black;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+.link3 {
+  stroke: black;
+  stroke-width: 4px;
+  cursor: pointer;
+}
+
+.node3 {
+  fill: #FFF;
+  fill-opacity: 0.95;
+  stroke: black;
+  stroke-width: 1.5px;
+  cursor: pointer;
+}
+
+.label3 {
+  cursor: pointer;
+}
+
+.linkLabel3 {
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.row, .column {
+  display: -webkit-box;
+  display: -moz-box;
+  display: box;
+}
+
+.row {
+  width: 100%;
+  margin:0px;
+}
+
+.row >*,
+.column >* {
+  display: -webkit-box;
+  display: -moz-box;
+  -webkit-box-flex: 1;
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  -moz-box-flex: 1;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  box-flex: 1;
+  box-align: center;
+  box-pack: center;
+}
+
+.column {
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  box-orient: vertical;
+  padding: 0px;
+}
+
+.column {
+  -webkit-box-align: center;
+  -webkit-box-pack: center;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  box-align: center;
+  box-pack: center;
+}
+
+.p3 path {
+  stroke: none;
+  fill: rgba(66, 158, 197, 0.2);
+  filter: url(#inner-shadow);
+  cursor: pointer;
+}
+
+.p3 path:first-child {
+  fill: #E0E4CC;
+  stroke: #E0E4CC;
+  cursor: pointer;
+}
+
+.p3 text {
+  font-size: 18px;
+  fill: black;
+  font-weight: 300;
+  font-family: arial;
+  cursor: pointer;
+}
+
+</style>
+
+<style type="text/css">
+
+#formTable, #fileTable, #svg2menu, #sumMenu{
+	width:100%;
+	margin: 1px auto;
+	font-family: arial;
+	color:#EDB;
+	}
+
+#formTable input, #fileTable input, .fileUpload span, #t2-2 input, #sumMenu input, #chainMenu input, #svg2menu input, 
+		#infoMenu input, #sumMenu input, #sumMenu select, #filter input, #predicateTable input, 
+		#semGroupTable input, #findTable input, #LogicBuilderFileTable input, .fileUpload2 span {
+	width: 100%;
+	display: inline;
+	align: right;
+	color: #111;
+	border:1px solid #111;
+	font-family: arial;
+	height: 22px;
+	font-size: 13px;
+	border-radius:2px;
+	}
+	
+#container3container {
+	vertical-align: bottom;
+	resize: both;
+	overflow: hidden;
+	width: 800px;
+	padding: 2px 2px 2px 2px;
+	}
+#infoMenu{
+	width:100%;
+	margin: 3px auto;
+	font-size: 13px;
+	font-family: arial;
+	color:black;
+	width:auto;
+	height:auto;
+	}
+#infoText td {
+	border: 1px solid #CDF;
+	margin:0px 0px;
+	padding:0px 0px;
+	align: bottom;
+	width: 200;
+	max-width:300px;
+	background-color: white;
+	}
+#t2-2 {
+	color:#256;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: LightCyan;
+	font-family: arial;
+	}
+#t2-1 {
+	color:black;
+	margin:0px 0px;
+	padding:0px 0px;
+	border:0;
+	font-family: arial;
+	}
+#panel tr{
+	margin:0px 0px;
+	padding:0px 0px;
+	}
+	
+#formTable caption, #fileTable caption {
+	height: 16px;
+	line-height: 18px;
+	font-size: 18px;
+	color:#222;
+	 }
+#formTable input, #fileTable input, #t2-2 input, #chainMenu input, #sumMenu input, #svg2menu input, 
+		#infoMenu input, #sumMenu input, #sumMenu select{
+	width: 100%;
+	display: inline;
+	color: #111;
+	border:1px solid #111;
+	font-family: arial;
+	height: 26px;
+	font-size: 13px;
+	border-radius:6px;
+	}
+#fileTable input[type="button"], #formTable input[type="button"], #t2-2 input[type="button"], 
+	    #chainMenu input[type="button"], #svg2menu input[type="button"], #infoMenu input[type="button"], 
+	    #sumMenu input[type="button"]{
+	position: relative;
+	background-color: #4B669C;
+	color: #EFF;
+	bottom: 0px;
+	width: 100px;
+	font-weight: bolder;
+	cursor: pointer;
+	}
+#fileTable input[type="button"]:hover, #formTable input[type="button"]:hover, #t2-2 input[type="button"]:hover, 
+	    #chainMenu input[type="button"]:hover, #svg2menu input[type="button"]:hover, 
+	    #infoMenu input[type="button"]:hover, #sumMenu input[type="button"]:hover{
+	bottom: 1px;
+	background-color: #68A
+	}
+
+#fileTable input[type="button"]:disabled, #formTable input[type="button"]:disabled, #t2-2 input[type="button"]:disabled, 
+	    #chainMenu input[type="button"]:disabled, #svg2menu input[type="button"]:disabled, 
+	    #infoMenu input[type="button"]:disabled, #sumMenu input[type="button"]:disabled{
+	color: #AAA
+	}
+
+#formTable input[type="text"]:focus, #fileTable input[type="text"]:focus{
+	background-color: #FFFFD2;
+	}
+#formTable input + span, #fileTable input + span, #t2-2 input + span, #svg2menu input + span, 
+		#infoMenu input + span, #sumMenu input + span{
+	display: none;
+	line-height: 32px;
+	font-size: 12px;
+	font-weight: bold;
+	color: black;
+	padding:0px 0px;
+	position: absolute;
+	width: 180px;
+	z-index:99;
+	}
+#saliency {
+	color: black;
+	}
+
+a[id='a1']:focus, a[id='b']:focus, a[id='d'].focus, a[id='e'].focus, a[id='f'].focus {
+	outline: none;
+	}
+
+storage, chains, info, appearance, searchPanel, summarization {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	}
+
+storage a[id='a1'], chains a[id='b'], searchPanel a[id='e'], summarization a[id='f']{
+	float: left;
+	background: #9FC54E;
+	border: 1px solid #9FC54E; 
+	}
+
+info a[id='c'], appearance a[id='d']{
+	// float: right;
+	background: #9FC54E;
+	border: 1px solid #9FC54E;
+	}
+
+storage a[id='a1'], chains a[id='b']:hover, searchPanel a[id='e']:hover, summarization a[id='f']:hover{
+	float: left;
+	background: #a0a0a0;
+	border: 1px solid #cccccc;
+	}
+
+info a[id='c']:hover, appearance a[id='d']{
+	float: right;
+	background: #a0a0a0;
+	border: 1px solid #cccccc;
+	}
+
+.slider, .slider2, .slider3, .slider5  {
+	position: absolute;
+	display: none;
+	background: rgba(34, 85, 102, 0.15);
+	border:1.5px solid #333;
+	border-radius:4px;
+	filter: url(#dropshadow);
+	opacity: .95;
+	}
+
+.slider {
+	top: 5px;
+	right: 0px;
+	width: auto;
+	height: auto;
+	padding: 1px 1px 1px 1px;
+	}
+
+.slider2 {
+	top: 55px;
+	left: 0px;
+	width: auto;
+	height: auto;
+	padding: 45px 1px 1px 1px;
+	}
+	
+.slider3 {
+	bottom: 5px; 
+	left: 0px;
+	width: auto;
+	height: auto;
+	max-width: 100%;
+	overflow: auto;
+	padding: 50px 10px 10px 10px;
+	}
+
+.slider5 {
+	bottom: 7px;
+	left: 0px;
+	width: 50%;
+	height: auto;
+	padding: 1px 10px 1px 1px;
+	}
+.slider9 {
+	bottom: 57px;
+	left: 0px;
+	width: 35%;
+	min-width: 300px;
+	height: auto;
+	padding: 1px 10px 12px 1px;
+	}
+	
+.slider a[id='a1'],  .slider2 a[id='b'], .slider3 a[id='c'], .slider5 a[id='e'], .slider a[id='a1']:visited, .slider2 a[id='b']:visited, .slider3 a[id='c']:visited,
+		.slider5 a[id='e']:visited{
+	margin: 0px;
+	padding: 0px;
+	color: #9FC54E;
+	}
+
+.slider2 a[id='b']:hover, .slider3 a[id='c']:hover, .slider5 a[id='e']:hover, .slider2 a[id='b']:visited:hover,  
+		.slider3 a[id='c']:visited:hover, .slider5 a[id='e']:visited:hover,
+	{
+	margin: 0;
+	padding: 0;
+	color: #ffffff;
+	}
+
+a[id='a1'].trigger, a[id='b'].trigger, a[id='e'].trigger, a[id='f'].trigger{
+	position: absolute;
+	text-decoration: none;
+	color: white;
+	font-size: 16px;
+	font-family: arial;
+	background:rgba(75, 102, 156, .85) 85% 55% no-repeat;
+	border:1px solid #444444;
+	border-radius:6px;
+	filter: url(#dropshadow);
+	display: block;
+	}
+	
+a[id='c'].trigger {   /* this moved to here with this style */
+	float: left;
+	text-decoration: none;
+	color: white;
+	font-size: 16px;
+	font-family: arial;
+	background:rgba(75, 102, 156, .85) 85% 55% no-repeat;
+	border:1px solid #444444;
+	border-radius:6px;
+	display: block;
+	bottom: 35px;
+	}
+
+a[id='b'].trigger:hover, a[id='c'].trigger:hover, a[id='e'].trigger:hover
+{
+	background:rgba(102, 136, 170, .85) 85% 55% no-repeat;
+	}
+
+a[id='b'].trigger{
+	top: 55px; left: 0;
+	padding: 10px 24px 10px 24px;
+	}
+
+/* a[id='c'].trigger{
+	top: 5px; left: 0;
+	padding: 10px 25px 10px 25px;
+	} */  /* see changes below */
+
+a[id='e'].trigger{
+	bottom: 5px; left: 0;
+	padding: 10px 25px 10px 25px;
+	}
+
+a[id='b'].trigger:hover{
+	top: 54px; left: 0;
+	padding: 10px 24px 10px 24px;
+	}
+	
+
+a[id='e'].trigger:hover{
+	bottom: 4px; left: 0;
+	padding: 10px 25px 10px 25px;
+	}
+
+a[id='h'].trigger, a[id='i'].trigger, a[id='j'].trigger{
+	position: absolute;
+	text-decoration: none;
+	color: white;
+	font-size: 16px;
+	font-family: arial;
+	background:rgba(75, 102, 156, 1) 85% 55% no-repeat;
+	border:1px solid #444444;
+	border-radius:6px;
+	-moz-box-shadow: 2px 2px 3px #000;
+	-webkit-box-shadow: 2px 2px 3px #000;
+	box-shadow: 2px 2px 3px #000;
+	display: block;
+	}
+
+storage, chains, info, appearance, searchPanel, summarization, filter, filePanel, findPanel, openLogicBuilderFilePanel {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	}
+	
+
+storage a[id='a1'], chains a[id='b'], searchPanel a[id='e'], summarization a[id='f'], filter a[id='g'], 
+filePanel a[id='h'], findPanel a[id='i']{
+	float: left;
+	background: #9FC54E;
+	border: 1px solid #9FC54E;
+	}
+	
+storage a[id='a1'], chains a[id='b']:hover, searchPanel a[id='e']:hover, summarization a[id='f']:hover, summarization a[id='f']:hover, 
+		filePanel a[id='h'], findPanel a[id='i']{
+	float: left;
+	background: #a0a0a0;
+	border: 1px solid #cccccc;
+	}
+	
+#progress_bar {
+	width: 100%;
+	min-width: 400px;
+    padding: 3px;
+    border: 1px solid #000;
+    font-size: 14px;
+    clear: both;
+    opacity: 0;
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+	}
+#progress_bar.loading {
+	opacity: 1.0;
+	}
+#progress_bar .percent {
+	background-color: #99ccff;
+	height: auto;
+	width: 0;
+	}
+
+#progress_bar2 {
+	width: 100%;
+	min-width: 400px;
+    padding: 3px;
+    border: 1px solid #000;
+    font-size: 14px;
+    clear: both;
+    opacity: 0; 
+    -moz-transition: opacity 1s linear;
+    -o-transition: opacity 1s linear;
+    -webkit-transition: opacity 1s linear;
+	}
+#progress_bar2.loading {
+	opacity: 1.0;
+	}
+#progress_bar2 .percent2 {
+	background-color: #99ccff;
+	height: auto;
+	width: 0;
+	}
+	
+.fileUpload {
+	position: relative;
+	overflow: hidden;
+	margin-left: 4px;
+	height: 25px;
+	}
+.fileUpload input.upload {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	}
+.fileUpload span {
+	position: relative;
+	display: inline;
+	padding: 2.5px 6px;
+	text-align: center;
+	box-sizing: border-box; 
+	-webkit-appearance: push-button;
+	font: -webkit-small-control;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	text-shadow: none;
+	-webkit-writing-mode: horizontal-tb;
+	cursor: pointer;
+	}
+
+.fileUpload2 {
+	position: relative;
+	overflow: hidden;
+	margin-left: 4px;
+	height: 25px;
+	}
+.fileUpload2 input.upload2 {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 20px;
+	cursor: pointer;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	}
+.fileUpload2 span {
+	position: relative;
+	display: inline;
+	padding: 2.5px 6px;
+	text-align: center;
+	box-sizing: border-box; 
+	-webkit-appearance: push-button;
+	font: -webkit-small-control;
+	letter-spacing: normal;
+	word-spacing: normal;
+	text-transform: none;
+	text-indent: 0px;
+	text-shadow: none;
+	-webkit-writing-mode: horizontal-tb;
+	cursor: pointer;
+	}
+	
+.fileU {
+font-size: 20px;
+color: white;
+
+}
+
+	 
+	
+/* a[id='b'].active.trigger, a[id='c'].active.trigger, a[id='e'].active.trigger{
+	background: rgba(75, 102, 156, .85) 75% 55% no-repeat;
+	}  */
+	
+	/* LIZ'S STYLE ELEMENTS */
+	
+
+
+#searchSpace {
+float:left;
+width:37%;
+height:40px;
+padding:10px;
+border-style:solid; 
+border-radius:10px;
+border-width:2px;
+border-color: #E45F56;
+font: 2em normal Arial, sans-serif;   /* 1em = 16px */
+text-align:left;
+background-color:#A3D39C;
+color:black;
+}
+
+#searchSpace input[type="text"]  {
+width: 300px;
+height: 28px;
+}
+
+
+.searchbox {
+
+}
+#skdWidgets {
+float:right;
+width:58%;
+height:40px;
+padding:10px;
+border-style:solid;
+border-radius:10px;
+border-width:2px;
+border-color: #E45F56;
+background-color:#A3D39C;
+color:black;
+}
+
+.skdWidgetbox {
+font: 12pt bold Arial, sans-serif;
+}
+
+
+#workSpace {
+// width:98%;
+// height:100%;
+padding:5px;
+border-style:solid;
+border-width:2px;
+border-color: #E45F56;
+margin: 0 auto;   /* center the workspace */
+/* box-shadow: 20px 20px 10px #888888; */
+background-color: LightCyan;
+}
+
+#container3container {
+	vertical-align: bottom;
+	resize: both;
+	overflow: hidden;
+	width: 800px;
+	padding: 2px 2px 2px 2px;
+	}
+
+.workSpacebox {
+
+}
+
+
+#chainSpace {
+// width:100%;
+// height:80%;
+padding:5px;
+border-style:solid;
+border-width:2px;
+border-color: #E45F56;
+margin: 0 auto;   /* center the workspace */
+/* box-shadow: 20px 20px 10px #888888; */
+background-color: LightCyan;
+}
+
+.chainSpacebox {
+
+}
+
+
+#otherWidgets {
+display:-webkit;
+float:right;
+width:48%;
+height:40px;
+padding:10px;
+border-style:solid;
+border-radius:10px;
+border-width:2px;
+border-color: #E45F56;
+background-color:#A3D39C;
+color:black;
+}
+
+#otherWidgets input[type="button"], #skdWidgets input[type="button"], #searchSpace input[type="button"] {
+
+background-color: #3399FF;
+color: #EFF;
+width: 130px;
+height: 40px;
+font-size: 12pt;
+font-weight: bolder;
+cursor: pointer;
+}
+
+#otherWidgets input[type="button"]:hover, #skdWidgets input[type="button"]:hover, #searchSpace input[type="button"]:hover
+{
+background-color:#68A;
+color: #EFF;
+} 
+
+
+
+.otherWidgetsbox {
+font: 12pt bold Arial, sans-serif;
+}
+
+.sentenceSpace
+{
+display:-webkit;
+float:left;
+width:25%;
+height:40px;
+padding:10px;
+border-style:solid;
+border-radius:10px;
+border-width:2px;
+border-color: #E45F56;
+background-color:#A3D39C;
+color:black;
+}
+
+.sentenceSpacebox {
+bottom: 5px; left: 0;
+	padding: 10px 25px 10px 25px;
+}
+ 
+ 
+
+a[id='c'].sentenceSpacebox {
+background-color: #3399FF;
+color: #EFF;
+width: 130px;
+height: 40px;
+padding: 5px 25px 10px 25px;
+font-size: 12pt;
+font-weight: bolder;
+cursor: pointer;
+text-decoration:none;
+border-top-style:solid;
+border-left-style:solid;
+border-color:white;
+border-width:2px;
+} 
+
+
+
+/*  a[id='c'].sentenceSpacebox:hover {
+background:rgba(102, 136, 170, .85) 85% 55% no-repeat;
+ } */
+
+
+#extraSpace {		/* will remain hidden unless we need it - will style if needed */
+visibility:hidden;
+}
+
+.extraSpacebox {
+}
+
+#bySemGroup {
+
+}
+
+.menuGroupStyle {
+padding: 5px;
+font-size: 16px;
+line-height: 1;
+border-style: solid;
+border: 1px;
+border-radius: 0;
+height: 30px;
+}
+
+#toDo{
+font-family: arial; 
+font-size: 28pt;
+text-align: center;
+text-align: bottom;
+margin-before: 1em;
+margin-after: 1em;
+margin-start: 0;
+margin-end: 0;
+color:maroon;
+}
+
+#MainTable{
+color:#256;
+	// border:2px solid #256;
+	// border-radius:4px;
+	background-color: GhostWhite;
+	font-family: arial;
+}
+
+#tr1A{
+color:#256;
+horizontal-align:left;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: LightCyan;
+	font-family: arial;
+	font-size: 18px;
+}
+
+#tr1B{
+color:#256;
+horizontal-align:right;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: LightCyan;
+	font-family: arial;
+	font-size: 18px;
+}
+
+#tr2{
+color:#256;
+	margin: 0 auto;
+	border:2px solid #256;
+	border-radius:1px;
+	background-color: GhostWhite;
+	font-family: arial;
+}
+
+#tr2A{
+color:#256;
+horizontal-align:left;
+	margin: 0 auto;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: #7ACCC8;
+	font-family: arial;
+}
+#tr2B{
+color:#256;
+horizontal-align:right;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: #C0C0C0;
+	font-family: arial;
+}
+
+#tr3{
+color:#256;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: LightCyan;
+	font-family: arial;
+}
+
+#tr4{
+color:#256;
+	border:2px solid #256;
+	border-radius:4px;
+	background-color: LightCyan;
+	font-family: arial;
+}
+
+.left{
+float:left;
+}
+
+.right{
+float:right;
+}
+
+input[type="button"]{
+  text-decoration: none;
+	color: white;
+	font-size: 16px;
+	font-family: arial;
+	background:rgba(75, 102, 156, .85) 85% 55% no-repeat;
+	border:1px solid #444444;
+	border-radius:6px;
+	display: block;
+}
+
+input[type="button"]:hover{
+	background:rgba(102, 136, 170, .85) 85% 55% no-repeat;
+	opacity: 1;
+}
+#resultPanel{
+padding:0px 0px 0px 25%;
+	height: 12px;
+	// width: 80%;
+	line-height: 12px;
+	font-size: 12px;
+	color:black;
+	// align:right;
+}
+
+#instructions {
+	font-family: "Arial";
+	font-size: 18px;
+	text-decoration: underline;
+	border: 1px solid;
+	cursor: pointer;
+}
+#aboutUs {
+	font-family: "Arial";
+	font-size: 18px;
+	text-decoration: underline;
+	border: 1px solid;
+	cursor: pointer;
+}
+
+.anchorMenu {
+	border: 1px solid black;
+	background-color: MediumTurquoise ;
+	font-size: 14px;
+	font-family: arial;
+	display: none;
+	position: relative;
+	filter: url(#dropshadow);
+	border-radius:3px;
+	}
+.anchorMenu, .anchorMenuli {
+	padding: 2px;
+	margin: 0px;
+	}
+.anchorMenuli {
+	color: White;
+	border: 0.5px solid black;
+	background-color: #FFE384;
+	border-radius:1px;
+	}
+.anchorMenu li:hover {
+	background-color: Gold;
+	color: black;
+	}
+
+</style>
+
+<script src="d3.v3.min.js"></script>
+<script src="jquery.tools.min.js"></script>
+<script src="jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="dist/knob.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="Blob.js"></script>
+<script src="FileSaver.js"></script>
+<script id="worker1" type="javascript/worker">
+
+
+
+        //wait for the start 'CalculatePi' message
+        //e is the event and e.data contains the JSON object
+        self.onmessage = function(e){
+            setInterval(function() {
+                        self.postMessage("tick fuction invoked.");
+                        try {
+                                var xhr = new XMLHttpRequest();
+                                    xhr.open("post", "https://skr3.nih.gov/spark/servlet/SemMedDBServlet?ping=yes", false);
+                                    /*  xhr.setRequestHeader("Content-Type",
+                                    "application/x-www-form-urlencoded"); */
+                                    xhr.onreadystatechange = function () {
+                                        if (xhr.readyState == 4 && xhr.status == 200) {
+                                                                  var result = JSON.parse(xhr.responseText);
+                                                                  self.postMessage(result.d);
+                }
+                                    };
+                                    xhr.send();
+                                        /* var xhr = $.ajax({
+                                                                        url: './servlet/SemMedDBServlet',
+                                                                        data: 'ping=yes',
+                                                                        dataType: 'json',
+                                                                        success: function(data) {
+                                                                        }
+                                                }); */
+                          } catch (e) {
+                        self.postMessage(e.toString());
+                        }
+          // $.get("servlet/SemMedDBServlet","ping=yes",function(data,status){
+          //        doNothing(data);
+          // });
+                self.postMessage("servlet function called.");
+
+        }, 60000);
+        };
+
+    // Rest of your worker code goes here.
+</script>
+
+</head>
+
+<body>
+
+  <script>
+    function log(msg) {
+      // Use a fragment: browser will only render/reflow once.
+     // var fragment = document.createDocumentFragment();
+      // fragment.appendChild(document.createTextNode(msg));
+     // fragment.appendChild(document.createElement('br'));
+
+     // document.querySelector("#log").appendChild(fragment);
+    }
+
+    var blob = new Blob([
+      document.querySelector('#worker1').textContent
+    ], { type: "text/javascript" })
+
+    // Note: window.webkitURL.createObjectURL() in Chrome 10+.
+    var worker = new Worker(window.URL.createObjectURL(blob));
+    worker.onmessage = function(e) {
+      // log("Received: " + e.data);
+    }
+    worker.postMessage(""); // Start the worker.
+  </script>
+
+<div id="main">
+
+<script id="worker1" type="javascript/worker">
+    // This script won't be parsed by JS engines because its type is javascript/worker.
+    self.onmessage = function(e) {
+      self.postMessage('msg from worker');
+    };
+    // Rest of your worker code goes here.
+  </script>
+
+  <script>
+    function log(msg) {
+      // Use a fragment: browser will only render/reflow once.
+      var fragment = document.createDocumentFragment();
+      fragment.appendChild(document.createTextNode(msg));
+      fragment.appendChild(document.createElement('br'));
+
+      document.querySelector("#log").appendChild(fragment);
+    }
+
+    var blob = new Blob([
+      document.querySelector('#worker1').textContent
+    ], { type: "text/javascript" })
+
+    // Note: window.webkitURL.createObjectURL() in Chrome 10+.
+    var worker = new Worker(window.URL.createObjectURL(blob));
+    worker.onmessage = function(e) {
+      log("Received: " + e.data);
+    }
+    worker.postMessage("--------------------------------------------hello"); // Start the worker.
+  </script>
+
+<table id="MainTable" height="100%" width="100%">
+
+	<tr>
+		<td align="left">
+
+						<div  id="aboutUs">
+						   <a class="inst">Instructions</a>
+						</div>
+		</td>
+		<td align="right">
+		
+						<div  id="aboutUs">
+							<a class="about">About</a>
+						</div>
+		
+		</td>
+	</tr>
+	<tr> 
+
+		<td align="left" style="width:45%">  
+			<table id="tr1A" width="100%">
+				<tr>
+					<td>Enter Concept(s)</td>
+					<td><input name="searchTerm" id="searchTerm" type="text" placeholder="" class="search-query"  title="Type new search terms."/></td>
+					<td><input id="search" name="search" type="button" value="Search" title="Enter terms and click to search." onclick="citationSearch();"/></td>
+					<td><label id="resultPanel"></label></td>
+				</tr>
+			</table>
+		</td>
+		<td align="right" style="width:55%">
+			<table id="tr1B" width="100%">
+				<tr>
+					<td>Randomization Types:</td>
+					<td><input id="randomAll" name="randomAll" type="button" value="All" title="Search required." onclick="openNetClickAll();"/></td>
+					<td><input id="common" name="common" type="button" value="Common" title="Load Semantically Related Predications" onclick="openNetClickCommon();"/></td>
+					<td><input id="surpriseMe" name="surpriseMe" type="button" value="Rare" title="Load Potentially Unknown Predications" onclick="openNetClickSurprise();"/></td>
+					<td>			
+									
+									<select id="bySemGroup" name="bySemGroup" class="menuGroupStyle" onChange="openNetClickSemGroups(this.value)">  
+										<option value="-1">Concepts</option>
+										<option value="0">Disorders</option>
+										<option value="1">Genes or Proteins</option>
+										<option value="2">Drugs or Chemicals</option>
+										<option value="3">Anatomy</option>
+										<option value="4">Physiology</option>
+									</select>
+					</td>	
+					<td>		
+									<select id="byPredicateGrp" name="byPredicateGrp" class="menuGroupStyle" onChange="openNetClickPredGroups(this.value)">  <!-- from Han Zhang 2013 Table 2 PMID 23742159 -->
+										<option value="-1">Relations</option>
+										<option value="5">Physical</option>			
+										<option value="6">Interaction</option>
+										<option value="7">Therapy</option>
+										<option value="8">Causation</option>
+										<option value="9">Diagnosis</option>
+										<option value="10">Affects</option>
+										<option value="11">Comorbidity</option>
+									</select>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+	<tr>
+		<table id="tr2" style="width: 100%; height:40%;">
+						<tr>
+							
+								<td align="left" style="width: 36%; height: 100%">
+									<table style="width: 100%; height: 85%;">
+										
+											<tr>
+												<td><div id="workSpace" class="workSpacebox" style="background-color:LightCyan; height:47em;"></div></td> 
+											</tr>
+											
+									</table>	
+								</td>
+								<td align="right" style="width: 49%; height: 100%">
+									<table style="width: 100%; height: 100%;">
+										<tr>
+											<td><div id="chainSpace" style="background-color:LightCyan; height:47em;"></div> </td>  
+										</tr>
+									</table>	
+								</td>
+							
+						</tr>
+		</table>
+	</tr>
+	
+	<tr>
+			<table id="tr3" style="width: 100%">
+				<tr>
+					<td>
+							<div id="info" class="slider3">
+							  <table border="0" id="infoMenu" >
+							   <tr>
+								<td>
+								 <table id="infoText"  resizable="true";>  
+								 </table>
+								</td>
+							   </tr>
+							  
+							  </table>
+							 </div>
+							<a id="c" class="trigger" href="" title="View source sentences and PubMed entries for relationships."></a>
+							<input id="freezeSVG" name="freezeSVG" type="button" value="Freeze" title="Stop or start graph animation." onclick="freezeNetwork(1);"/>
+							
+					</td>
+					
+					<td>
+						<input id="saveSVG1" name="saveSVG1" type="button" value="Save SKD graph" title="Save to file." onclick="saveNetwork(1);"/>
+					</td>
+					
+					<td>
+						<input id="deleteAll" name="deleteAll" type="button" value="Delete SKD Graph" title="Delete an SKD graph." onclick="deleteAll(1);">
+					</td>
+					
+					<td>
+						<div id="saveDialog" title="Save File" hidden="true">What do you want to save?</div>
+					</td>
+					
+					<td>
+						<input id="saveSVG3" name="saveSVG3" type="button" value="Save Work Space" title="Save to file." onclick="saveNetwork(3);"/>
+					</td>
+					
+					<td>
+						<input id="deleteAll2" name="deleteAll2" type="button" value="Delete Work Space" title="Delete Work Space." onclick="deleteAll(3);">
+					</td>
+					
+					<td>
+						<input id="deleteChain" name="deleteChain" type="button" value="Delete Predication" title="Delete all highlighted arrows." onclick="deleteChain();">
+					</td>
+				</tr>
+			</table>
+		
+	</tr>
+	
+	<tr>
+					
+			<table id="tr4" style="width:100%;">	
+				<tr>
+					<td>
+								<div id=filePanel class="slider9">
+											  
+												 <table border="0" id="fileTable">
+													  <caption style="width: 150px">Open Saved SKD Graph</caption>
+													  <tr>
+													  
+														   
+														   <td  align="left" style="width: 100%;">
+															<input id="uploadFile" type="text" placeholder="" disabled="disabled"/>
+														   </td>
+														   
+														   <td>
+															<div class="fileUpload btn btn-primary">
+															 <span>Select</span>
+															 <input type="file" id="files" name="file" class="upload"/>
+															</div>
+														   </td>
+														 
+													  </tr>
+													  
+												 </table>
+												
+												 <table>
+													 <td style="width: 100px;">
+													 </td>
+													 <td> 
+														<div id="progress_bar"><div class="percent">0%</div></div>
+													 </td>
+												 </table>
+											   
+								</div>
+					
+					</td>
+					
+					
+					
+					<td>
+							<div id=filePanel class="slider9">
+							  
+								 <table border="0" id="fileTable">
+									  <caption style="width: 150px">Open Saved Work</caption>
+									  <tr>
+										   <td  align="right" style="width: 100%;">
+											<input id="uploadFile2" type="text" placeholder="" disabled="disabled"/>
+										   </td>
+										   
+										   <td>
+											<div class="fileUpload2 btn btn-primary">
+											 <span>Select</span>
+											 <input type="file" id="files2" name="file2" class="upload2"/>
+											</div>
+										   </td>
+										   
+									  </tr>
+								 </table>
+								
+								 <table>
+										 <td style="width: 100px;">
+										 </td>
+										 <td> 
+											<div id="progress_bar2"><div class="percent2">0%</div></div>
+										 </td>
+								 </table>
+							
+							 </div>
+					
+					</td>	
+					
+				</tr>
+			</table>				
+					
+	</tr>
+	
+	
+	
+	<tr>				
+						
+						
+						<td>
+							<div id="extraSpace" class="extraSpacebox">
+							<!-- for now these are hidden by css class but we include them to establish preset values -->
+							Size:
+							<input id="knob1" class="preset3" type="range" min="1" max="5" data-width="45" data-height="45" data-angleOffset="270" data-angleRange="359"/>
+							Speed:
+							<input id="knob2" class="preset3" type="range" min="0" max="10" data-width="45" data-height="45" data-angleOffset="270" data-angleRange="359"/>
+							Color:
+							<input id="knob3" class="preset3" type="range" min="1" max="15" data-width="45" data-height="45" data-angleOffset="270"data-angleRange="359"/>
+							<input id="hideLabels" name="hideLabels" type="button" value="Hide Labels" title="Hide arrow labels." onclick="hideLabels();"/>
+							</div>
+						</td>
+			
+	</tr>
+	
+</table>
+
+<div class="anchorMenu" id="linkContextMenu">
+	<ul>
+		<li id="linkItem1" label=""></li>
+		<li id="linkItem2" label=""></li>
+		<li id="linkItem3" label=""></li>
+		<li id="linkItem4" label=""></li>
+		<li id="linkItem5" label=""></li>
+	</ul>
+</div>
+
+
+<script> 
+
+
+///////////////////////////////////////////////////////////////////
+// standard scales
+var nodeScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5])
+	.range([2,5,10,15,20]);
+var fontScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5])
+	.range(['0px','9px','12px','14px','20px']);
+var strokeScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5])
+	.range([1,3,5,7,10]);
+var distanceScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5])
+	.range([40,120,225,450,750]);
+var chargeScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5])
+	.range([-300,-600,-1000,-2500,-3500]);
+
+
+var backgroundScale = d3.scale.ordinal()
+	.domain([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15])
+	.range(['GhostWhite','Lavender','LightCyan','LightYellow','MistyRose','PapayaWhip','Wheat',
+	        'lightCyan','SkyBlue','PowderBlue','Pink','CadetBlue','LightSlateGray','SlateGray','#191919']);
+	        
+var semanticGroupsScale = d3.scale.ordinal()
+	.domain(["acty","bhvr","dora","evnt",
+	         "gora","inbe","mcha","ocac",
+	         "socb","anst","blor","bpoc","bsoj","bdsu","bdsy","cell",
+	         "celc","emst","ffas","tisu","aapp","antb","bacs",
+	         "bodm","carb","chem","chvf","chvs",
+	         "clnd","eico","elii","enzy","hops",
+	         "horm","imft","irda","inch","lipd",
+	         "nsba","nnon","orch","opco","phsu",
+	         "rcpt","strd","vita","clas","cnce",
+	         "ftcn","grpa","idcn","inpr","lang",
+	         "qlco","qnco","rnlw","spco","tmco",
+	         "drdd","medd","resd","acab","anab","comd","cgab","dsyn","emod",
+	         "fndg","inpo","mobd","neop","patf","sosy","amas",
+	         "crbs","gngm","mosq",
+	         "nusq","geoa","aggp","alga","amph",
+	         "anim","arch","bact","bird","famg","fish",
+	         "fngs","grup","humn","invt","mamm","orgm",
+	         "podg","plnt","popg","prog","rept","rich",
+	         "vtbt","virs","enty","food","mnob","phob","sbst","bmod",
+	         "ocdi","hcro","orgt","pros","shro","biof","eehu",
+	         "hcpp","lbtr","npop","phpr","celf","clna","genf","menp",
+	         "moft","ortf","orga","orgf","phsf","diap","adac","hlca",
+	         "lbpr","mbrt","resa","topp"])
+	.range(["Activities & Behaviors","Activities & Behaviors","Activities & Behaviors","Activities & Behaviors",
+			"Activities & Behaviors","Activities & Behaviors","Activities & Behaviors","Activities & Behaviors",
+			"Activities & Behaviors","Anatomy","Anatomy","Anatomy","Anatomy","Anatomy","Anatomy","Anatomy",
+			"Anatomy","Anatomy","Anatomy","Anatomy","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs",
+			"Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs",
+			"Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs",
+			"Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs",
+			"Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs",
+			"Chemicals & Drugs","Chemicals & Drugs","Chemicals & Drugs","Concepts & Ideas","Concepts & Ideas",
+			"Concepts & Ideas","Concepts & Ideas","Concepts & Ideas","Concepts & Ideas","Concepts & Ideas",
+			"Concepts & Ideas","Concepts & Ideas","Concepts & Ideas","Concepts & Ideas","Concepts & Ideas",
+			"Devices","Devices","Devices","Disorders","Disorders","Disorders","Disorders","Disorders","Disorders",
+			"Disorders","Disorders","Disorders","Disorders","Disorders","Disorders","Genes & Molecular Sequences",
+			"Genes & Molecular Sequences","Genes & Molecular Sequences","Genes & Molecular Sequences",
+			"Genes & Molecular Sequences","Geographic Areas","Living Beings","Living Beings","Living Beings",
+			"Living Beings","Living Beings","Living Beings","Living Beings","Living Beings","Living Beings",
+			"Living Beings","Living Beings","Living Beings","Living Beings","Living Beings","Living Beings",
+			"Living Beings","Living Beings","Living Beings","Living Beings","Living Beings","Living Beings",
+			"Living Beings","Living Beings","Objects","Objects","Objects","Objects","Objects","Occupations",
+			"Occupations","Organizations","Organizations","Organizations","Organizations","Phenomena","Phenomena",
+			"Phenomena","Phenomena","Phenomena","Phenomena","Physiology","Physiology","Physiology","Physiology",
+			"Physiology","Physiology","Physiology","Physiology","Physiology","Procedures","Procedures","Procedures",
+			"Procedures","Procedures","Procedures","Procedures"]);
+			
+			var nodeColorScale = d3.scale.ordinal()
+	.domain(["Activities & Behaviors","Anatomy","Chemicals & Drugs","Concepts & Ideas","Devices","Disorders",
+	         "Genes & Molecular Sequences","Geographic Areas","Living Beings","Objects","Occupations","Organizations",
+	         "Phenomena","Physiology","Procedures"])
+	.range(["#FFA16D","#CBFFA7","#FFFFC6","#96FF4F","#FFFF66","#EEC8DE",
+			"#D2A2A2","#B16363","#C6EFF7","#6FD6EB","#A88FCD","#FFD7C1",
+			"#DE93BD","#DCD1EB","#C0C0C0"]);
+
+var linkColorScale = d3.scale.ordinal()
+	.domain(["ADMINISTERED_TO","AFFECTS","ASSOCIATED_WITH","AUGMENTS","CAUSE","CAUSES","COEXISTS_WITH",
+	         "compared_with","COMPLICATES","CONVERTS_TO","CO-OCCURS_WITH","DIAGNOSES","DISRUPTS","higher_than",
+	         "ENHANCES","INHIBIT","INHIBITS","INTERACT_WITH","INTERACTS_WITH","ISA","LOCATION_OF",
+	         "lower_than","MANIFESTATION_OF","METHOD_OF","NEG_ADMINISTERED_TO","NEG_AFFECTS","NEG_ASSOCIATED_WITH","NEG_AUGMENTS",
+	         "NEG_CAUSES","NEG_COEXISTS_WITH","NEG_COMPLICATES","NEG_CONVERTS_TO","NEG_DIAGNOSES","NEG_DISRUPTS","NEG_higher_than",
+	 		 "NEG_INHIBITS","NEG_INTERACTS_WITH","NEG_LOCATION_OF","NEG_lower_than","NEG_MANIFESTATION_OF","NEG_METHOD_OF","NEG_OCCURS_IN",
+	 		 "NEG_PART_OF","NEG_PRECEDES","NEG_PREDISPOSES","NEG_PREVENTS","NEG_PROCESS_OF","NEG_PRODUCES","NEG_STIMULATES",
+	 		 "NEG_TREATS","NEG_USES","OCCURS_IN","PART_OF","PREDISPOSE","PRECEDES","PREDISPOSES",
+	         "PREVENTS","PROCESS_OF","PRODUCES","same_as","than_as","STIMULATE","STIMULATES",
+	         "TREATS","USES"])
+	.range(["#6B8E23","#32CD32","#D19275","#40E0D0","#FF0000","#FF0000","#2F4F4F",
+	        "#872AD2","#BC8F8F","#4B0082","#808080","#D2691E","#FFFF00","#91683F",
+	        "#40E0D0","#800080","#800080","#FF00FF","#FF00FF","#00FFFF","#008000",
+	        "#9BA5AC","#CD853F","#9FBE3E","#6B8E23","#32CD32","#D19275","#40E0D0",
+	        "#FF0000","#2F4F4F","#BC8F8F","#4B0082","#D2691E","#FFFF00","#91683F",
+	        "#800080","#FF00FF","#008000","#9BA5AC","#CD853F","#9FBE3E","#FFA500",
+	        "#008080","#DD2ECC","#7FFFD4","#4682B4","#FA8072","#E55FF0","#A52A2A",
+	        "#0000FF","#EF9D5D","#FFA500","#008080","#7FFFD4","#DD2ECC","#7FFFD4",
+	        "#4682B4","#FA8072","#E55FF0","#E76C39","#EB84CB","#A52A2A","#A52A2A",
+	        "#0000FF","#EF9D5D"]);
+
+
+var predColumn = d3.scale.ordinal()
+	.domain(["PID","SID","PNUMBER","PMID","predicate","s_cui","s_name","s_type","s_novel","o_cui",
+		"o_name","o_type","o_novel"])
+	.range([0,1,2,3,4,5,6,7,8,9,10,11,12]);
+
+// the logo json object
+	var loadNet =  {"id":"0", "searchTerms":"", fileName:"",   // properties of this tier of the json object
+
+		"nodes":[
+					{"network":"0", "id":"1",  "symbol":"A", "name":"Spark!", "semtype":"aapp", "visible":true, "sColor":"black", "x":350, "y":400, "anchor":true},  
+					{"network":"0", "id":"2",  "symbol":"B", "name":" ", "semtype":"tisu", "visible":true, "sColor":"black", "x":375, "y":401, "anchor":false},  
+					{"network":"0", "id":"3",  "symbol":"C", "name":" ", "semtype":"genf", "visible":true, "sColor":"black", "x":400, "y":400, "anchor":false},
+					{"network":"0", "id":"4",  "symbol":"D", "name":" ", "semtype":"bpoc", "visible":true, "sColor":"black", "x":425, "y":401, "anchor":false},
+					{"network":"0", "id":"5",  "symbol":"E", "name":" ", "semtype":"celf", "visible":true, "sColor":"black", "x":450, "y":400, "anchor":false},
+					{"network":"0", "id":"6",  "symbol":"F", "name":" ", "semtype":"orgf", "visible":true, "sColor":"black", "x":375, "y":401, "anchor":false},
+					{"network":"0", "id":"7",  "symbol":"G", "name":" ", "semtype":"gngm", "visible":true, "sColor":"black", "x":400, "y":400, "anchor":false},
+					{"network":"0", "id":"8",  "symbol":"H", "name":" ", "semtype":"biof", "visible":true, "sColor":"black", "x":425, "y":401, "anchor":false},
+					
+			], 
+		"links":[
+
+					{"source":"1", "target":"2", "sColor":"black", "predicate":[{"label":"INTERACTS_WITH", 
+						"sentence": [{"PMID":"14759819", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },  
+					{"source":"1", "target":"3", "sColor":"black", "predicate":[{"label":"PRODUCES", 										 
+						"sentence": [{"PMID":"15360864", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },  
+					{"source":"1", "target":"4", "sColor":"black", "predicate":[{"label":"USES", 
+						"sentence": [{"PMID":"17238342", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },
+					{"source":"1", "target":"5", "sColor":"black", "predicate":[{"label":"AFFECTS", 
+						"sentence": [{"PMID":"18694079", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },
+					{"source":"1", "target":"6", "sColor":"black", "predicate":[{"label":"PROCESS_OF", 
+						"sentence": [{"PMID":"21575741", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },
+					{"source":"1", "target":"7", "sColor":"black", "predicate":[{"label":"PREVENTS", 
+						"sentence": [{"PMID":"22195216", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },
+					{"source":"1", "target":"8", "sColor":"black", "predicate":[{"label":"PREDISPOSES", 
+						"sentence": [{"PMID":"22294819", SID:"", "abti":"ab", "sNumber":"n", "text":"Search or load file to begin."}] }] },
+					
+			]
+		};
+
+////////////////////////////////////////////////////////////////
+// main networks
+
+var width = 0.100*($(document).width());
+var height = 0.100*($(document).height());
+var h4 = height * 7;
+var w4 = width * 3;
+
+
+var nodes = [],
+    links = [],
+    labels = [];
+
+var force = d3.layout.force() 
+    .nodes(nodes)  
+    .links(links)
+    .charge(-100)  
+    .linkDistance(800)
+    .friction(0)
+    .size([width, height]) 
+	.on("tick", tick);
+
+
+var svg1 = d3.select("#workSpace").append("svg")   
+	   .attr("id","svg1")
+	   .attr({"width": "98%","height": "95%"})
+	   .attr("viewBox", "-180, -260, 540, 595")
+       .attr("preserveAspectRatio", "xMinYMid meet")
+       .attr("pointer-events", "all")
+	   .on("mousedown", moveSVG)
+	.append('svg:g');
+	
+
+var link = svg1.append("svg:g").selectAll(".links"),   
+    node = svg1.append("svg:g").selectAll(".nodes"),  
+    label = svg1.append("svg:g").selectAll(".labels");  
+	
+
+//////////////////////////////////////////////////////////
+// user-added predications network
+var nodes3 = [],
+    links3 = [],
+    labels3 = [],
+    linkLabels3 = [];
+
+var force3 = d3.layout.force()
+    .nodes(nodes3)
+    .links(links3)
+    .charge(-100)
+    .linkDistance(width/6 - 20)
+    .size([width*0.9, height*0.9])
+    .on("tick", tick3);
+
+var svg3 = d3.select("#chainSpace").append("svg")
+	.attr({"width": "100%","height": "100%"})
+	.attr("viewBox", "0 0 " + 1000 + " " + 800)
+      	.attr("preserveAspectRatio", "xMidYMid meet")
+      	.attr("pointer-events", "all")
+	.call(d3.behavior.zoom().on("zoom", redraw3))
+	.append('svg:g');
+
+var link3 = svg3.append("svg:g").selectAll(".link"),
+    node3 = svg3.append("svg:g").selectAll(".node"),
+    label3 = svg3.append("svg:g").selectAll(".label"),
+    linkLabel3 = svg3.append("svg:g").selectAll(".linkLabel");
+
+///////////////////////////////////////////////////////////////////////////////////
+// example gradient
+var gradient = svg1.append("svg:defs")
+    .append("svg:radialGradient")
+    .attr("id", "gradient")
+    .attr("x1", "0%")
+    .attr("y1", "20%")
+    .attr("x2", "50%")
+    .attr("y2", "100%");
+
+gradient.append("svg:stop")
+    .attr("offset", "10%")
+    .attr("stop-color", "blue");
+
+gradient.append("svg:stop")
+    .attr("offset", "40%")
+    .attr("stop-color", "green");
+
+gradient.append("svg:stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "orange");
+
+var rGradient = svg1.append("svg:defs")
+  .append("svg:radialGradient")
+    .attr("id", "rGradient")
+    .attr("x1", "0%")
+    .attr("y1", "20%")
+    .attr("x2", "50%")
+    .attr("y2", "100%");
+
+rGradient.append("svg:stop")
+    .attr("offset", "10%")
+    .attr("stop-color", "orange");
+
+rGradient.append("svg:stop")
+    .attr("offset", "60%")
+    .attr("stop-color", "green");
+
+rGradient.append("svg:stop")
+    .attr("offset", "100%")
+    .attr("stop-color", "blue");
+
+
+// global vars
+
+var linksN = [];
+var nodesN = [];
+var labelsN = [];
+
+var oldIDCounter = "";
+
+var MAXDATE = "2014/3/31";
+var searchResult = [];
+	searchResult[0] = " ",
+	searchLimits = "\"1900/01/01\":\"" + MAXDATE + "\"[edat]&retmax=5000";
+
+var currentNetwork = "";
+var linkIDCounter = "";
+var testNum = 25;
+var networks = [];
+    
+var selection = {};
+var summaryNodes = [],
+    summaryLinks = [];
+	
+var lastBottom = 8;
+var maxDegree = 0;
+	
+var genGroup = ["podg", "popg", "aggp", "grup", "famg", "mamm", "humn"];  // concepts from these semtypes shouldn't serve as anchors
+
+
+var randomCUIs = [];
+var onePath = [];
+var onePathSort = [];
+var onePathAlt = [];
+var onePathSortAlt = [];
+var sKeys = [];
+
+var testUCommonA = [];  
+var testUCommonB = [];
+var testUCommonC = [];
+var testUCommonD = [];
+var testUCommonE = [];
+
+var cArrCounterA = 0;
+var cArrCounterB = 0;
+var cArrCounterC = 0;
+var cArrCounterD = 0;
+var cArrCounterE = 0;
+
+var cuiAnchor = "";
+
+// File handler2
+var reader;
+var progress = document.querySelector('.percent');
+var progress2 = document.querySelector('.percent2');
+
+var altAnchorCui = "";
+var altAnchorCui1 = "";
+var altAnchorCui2 = "";
+var altAnchorCui3 = "";
+var altAnchorCui4 = "";
+var altAnchorCui5 = "";
+
+var callIt = "";
+var val;
+
+var newSemT = "";
+
+//////////////////////////////////////////////////////////////////////////
+// functions
+
+$(document).ready(function() {
+
+	$("a").click(function(){
+
+		switch(this.id) {   
+			case 'a1':
+			        $(".slider").toggle("fast");
+			        $("a1").toggleClass("active");
+	        		return false;
+			case 'b':
+			        $(".slider2").toggle("fast");
+			        $("b").toggleClass("active");
+			        
+					shiftChains();
+			        
+	        		return false;
+			case 'c':
+			        $(".slider3").toggle("fast");
+			        $("c").toggleClass("active");
+	        		return false;
+			case 'e':
+			        $(".slider5").toggle("fast");
+			        $("e").toggleClass("active");
+	        		return false;
+			case 'f':
+			        $(".slider6").toggle("fast");
+			        $("f").toggleClass("active");
+			        fillNetworkSelector();
+			        fillSchemaSelector();
+	        		return false;
+		}
+		return false;
+	    });	
+
+	d3.select("body")					
+    		.on("keydown", function() { 
+			switch(d3.event.keyCode){
+
+					
+				case 13: // enter
+					if (document.getElementById('searchTerm') == document.activeElement)  // test for search query or file input
+						citationSearch();
+					else if (document.getElementById('filePath') == document.activeElement)
+						getFile();
+					break;
+
+			} 
+		});
+	
+	 $("a.inst").on("click",function(){
+         window.open('instructions.html','_blank');
+     });
+	 
+	 $("a.about").on("click",function(){
+         window.open('about.html','_blank');
+     });
+
+ 
+		
+/////////////////////////////////////////
+// functions for saving graphs
+
+// file handler
+function abortRead() {
+	reader.abort();
+	}
+
+function errorHandler(evt) {
+	switch(evt.target.error.code) {
+		case evt.target.error.NOT_FOUND_ERR:
+			alert('File Not Found!');
+			break;
+		case evt.target.error.NOT_READABLE_ERR:
+			alert('File is not readable');
+			break;
+		case evt.target.error.ABORT_ERR:
+			break; // noop
+		default:
+			alert('An error occurred reading this file.');
+	};
+}
+
+function updateProgress(evt) {
+	// evt is a ProgressEvent.
+	if (evt.lengthComputable) {
+		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+		// Increase the progress bar length.
+		if (percentLoaded < 100) {
+			progress.style.width = percentLoaded + '%';
+			progress.textContent = percentLoaded + '%';
+		}
+	}
+}
+
+
+function handleFileSelect(evt) {
+    // Reset progress indicator on new file selection.
+    progress.style.width = '0%';
+    progress.textContent = '0%';
+
+    reader = new FileReader();
+    reader.onerror = errorHandler;
+    reader.onprogress = updateProgress;
+    reader.onabort = function(e) {
+      alert('File read cancelled');
+    };
+    reader.onloadstart = function(e) {
+      document.getElementById('progress_bar').className = 'loading';
+    };
+    reader.onload = function(e) {
+      // Ensure that the progress bar displays 100% at the end.
+      progress.style.width = '100%';
+      progress.textContent = '100%';
+      setTimeout("document.getElementById('progress_bar').className='';", 2000);
+    }
+    
+    reader.onloadend = function(e) {
+		// load into networks
+    	loadGraph(reader.result);
+    }
+
+    // Read in the image file as a data url
+    reader.readAsText(evt.target.files[0])
+}
+
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+
+function updateProgress2(evt) {
+	// evt is a ProgressEvent.
+	if (evt.lengthComputable) {
+		var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+		// Increase the progress bar length.
+		if (percentLoaded < 100) {
+			progress2.style.width = percentLoaded + '%';
+			progress2.textContent = percentLoaded + '%';
+		}
+	}
+}
+
+function handleFileSelect2(evt) {
+    // Reset progress indicator on new file selection.
+    progress2.style.width = '0%';
+    progress2.textContent = '0%';
+
+    reader = new FileReader();
+    reader.onerror = errorHandler;
+    reader.onprogress = updateProgress;
+    reader.onabort = function(e) {
+      alert('File read cancelled');
+    };
+    reader.onloadstart = function(e) {
+      document.getElementById('progress_bar2').className = 'loading';
+    };
+    reader.onload = function(e) {
+      // Ensure that the progress bar displays 100% at the end.
+      progress2.style.width = '100%';
+      progress2.textContent = '100%';
+      setTimeout("document.getElementById('progress_bar2').className='';", 2000);
+    }
+    
+    reader.onloadend = function(e) {
+		// load into networks
+		
+    	loadGraph2(reader.result);
+    }
+
+    // Read in the image file as a data url
+    reader.readAsText(evt.target.files[0])
+}
+
+document.getElementById('files2').addEventListener('change', handleFileSelect2, false);
+
+
+		
+/////////////////////////////////////////
+// logo network
+	for (var i = 0; i < loadNet.links.length; i++) {
+
+		var target = loadNet.links[i].target, 
+		    source = loadNet.links[i].source;
+
+		loadNet.links[i].source = loadNet.nodes[findNode(source,loadNet.nodes)];   
+		loadNet.links[i].target = loadNet.nodes[findNode(target,loadNet.nodes)];  
+	}
+
+	networks.push(loadNet);  
+
+	viewNetwork(0,1); 
+
+	networks.pop(); 
+
+	setDegree(nodes);
+	var Anchor = setAnchor(0);
+	createAnchorGradient(Anchor);
+
+	start();
+
+	svg1.style("opacity", 1e-6)
+		.transition()
+		.duration(500)
+		.style("opacity", 1);
+});
+
+function getInstructions()
+        {
+            return "instructions.html";
+        }
+		
+function getAbout()
+        {
+            return 'about.html','_blank';
+        }
+
+function clickcancel() {
+    var event = d3.dispatch('click', 'dblclick');
+    function cc(selection) {
+        var down,
+            tolerance = 5,
+            last,
+            wait = null;
+        // euclidean distance
+        function dist(a, b) {
+            return Math.sqrt(Math.pow(a[0] - b[0], 2), Math.pow(a[1] - b[1], 2));
+        }
+        selection.on('mousedown', function() {
+            down = d3.mouse(document.body);
+            last = +new Date();
+        });
+        selection.on('mouseup', function() {
+            if (dist(down, d3.mouse(document.body)) > tolerance) {
+                return;
+            } else {
+                if (wait) {
+                    window.clearTimeout(wait);
+                    wait = null;
+                    event.dblclick(d3.event);
+                } else {
+                    wait = window.setTimeout((function(e) {
+                        return function() {
+                            event.click(e);
+                            wait = null;
+                        };
+                    })(d3.event), 300);
+                }
+            }
+        });
+    };
+    return d3.rebind(cc, event, 'on');
+}
+
+function clicktest(el, onsingle, ondouble) {
+            if (el.getAttribute("data-dblclick") == null) {
+                el.setAttribute("data-dblclick", 1);
+                setTimeout(function () {
+                    if (el.getAttribute("data-dblclick") == 1) {
+                        onsingle();
+                    }
+                    el.removeAttribute("data-dblclick");
+                }, 300);
+            } else {
+                el.removeAttribute("data-dblclick");
+                ondouble();
+            }
+}
+
+function isAnchor(d) {
+	
+	if(n == cuiAnchor)
+	{
+	return true;
+	}
+	return false;
+}
+
+
+function start() {  
+
+  var zoomValue = document.getElementById("knob1").value;
+
+
+  link = link.data(force.links(), function(d) { return d.source.id + "-" + d.target.id; });  
+
+  link.enter().append("svg:path")  
+	.on("click", function(d) {clicktest(this, function(){fillInfoText(d)}, function(){linkClick(d)})})
+	.attr("class", "link")
+	.attr("fill", function(d) { return linkColorScale(d.predicate[0].label); })
+	.style("stroke", "#222")  
+	.style("stroke-width", function() { return strokeScale(zoomValue); })
+	.attr("opacity", 0.5)
+	.call(force.drag)  
+	.attr("pointer-events", "all");  
+  link.exit().remove();
+
+  node = node.data(force.nodes(), function(d) { return d.id;});
+  node.enter()  
+	.append("circle")
+	.attr("pointer-events", "all") 
+	.attr("class", "node")
+     .on("click", function(d) {toggleColor(d);})
+	.style("fill", function(d) {return nodeColorScale(semanticGroupsScale(d.semtype)); })
+	.style("stroke", function(d) { d.sColor = "black"; return d.sColor; })
+	.style("stroke-width", 1)
+	.attr("opacity", 0.9)
+	.call(force.drag)
+	.on("contextmenu", function(d) {
+	
+		if(d.symbol == cuiAnchor)
+		{
+		
+		 //handle right click
+		 if (d3.event.pageX || d3.event.pageY) {
+				var x = d3.event.pageX - 5;
+				var y = d3.event.pageY - 5;
+			} else if (d3.event.clientX || d3.event.clientY) {
+				var x = d3.event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+				var y = d3.event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+			}
+		 d3.select('#linkContextMenu')
+			  .style('position', 'absolute')
+			  .style('left', x + 'px')
+			  .style('top', y + 'px')
+			  .style("fill", "white")
+			  .style('display', 'inline-block')
+			  .on('mouseleave', function() {d3.select('#linkContextMenu').style('display', 'none');});
+		 d3.select('#linkItem1')
+				.on("click", function(d,i) {altAnchorCui = altAnchorCui1; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});  
+		 d3.select('#linkItem2')
+				.on("click", function(d,i) {altAnchorCui = altAnchorCui2; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+		 d3.select('#linkItem3')
+				.on("click", function(d,i) {altAnchorCui = altAnchorCui3; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+		 d3.select('#linkItem4')
+				.on("click", function(d,i) {altAnchorCui = altAnchorCui4; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+		 d3.select('#linkItem5')
+				.on("click", function(d,i) {altAnchorCui = altAnchorCui5; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+			  
+		 d3.event.preventDefault();
+		 }
+	})
+	.attr("pointer-events", "all");  
+  node.exit().remove();
+  
+
+  labels = nodes;
+  label = label.data(labels, function(d) { return d.id;});  
+  label.enter()
+	.append("text")  
+	.text(function(d) { return d.name;})
+        .on("click", function(d) {toggleColor(d);})  
+	.attr("dx", -10)  
+	.attr("dy", -200) 
+	.attr("fill", "black")
+	.style('font-family', 'arial')
+	.style('cursor', 'pointer') 
+	.style('font-size', function() { return fontScale(zoomValue); })  
+	.attr("opacity", 0)
+	.call(force.drag)
+	.on("contextmenu", function(d) {
+	
+	if(d.symbol == cuiAnchor)
+	{
+	
+     //handle right click
+	 if (d3.event.pageX || d3.event.pageY) {
+            var x = d3.event.pageX - 5;
+            var y = d3.event.pageY - 5;
+        } else if (d3.event.clientX || d3.event.clientY) {
+            var x = d3.event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            var y = d3.event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+	 d3.select('#linkContextMenu')
+          .style('position', 'absolute')
+          .style('left', x + 'px')
+          .style('top', y + 'px')
+          .style("fill", "white")
+          .style('display', 'inline-block')
+          .on('mouseleave', function() {d3.select('#linkContextMenu').style('display', 'none');});
+	 d3.select('#linkItem1')
+        	.on("click", function(d,i) {altAnchorCui = altAnchorCui1; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});  
+	 d3.select('#linkItem2')
+        	.on("click", function(d,i) {altAnchorCui = altAnchorCui2; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+	 d3.select('#linkItem3')
+        	.on("click", function(d,i) {altAnchorCui = altAnchorCui3; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+	 d3.select('#linkItem4')
+        	.on("click", function(d,i) {altAnchorCui = altAnchorCui4; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+	 d3.select('#linkItem5')
+        	.on("click", function(d,i) {altAnchorCui = altAnchorCui5; whichCalled(); d3.select('#linkContextMenu').style('display', 'none');});
+		  
+     d3.event.preventDefault();
+	 
+	 }
+	})
+	.attr("pointer-events", "all");  
+  label.exit().remove();  
+  
+  force.start();
+
+  node.append("title") 
+    .text(function(d) { return d.symbol + ": " + d.name + " (" + d.semtype + ")"; }); 
+
+  link.append("title")  
+      .text(function(d) {	var text = "";
+      						text += d.source.name + " " + d.predicate[0].label + " " + d.target.name;
+      						for (var i = 1; i < d.predicate.length; i++) {
+      							text += "; " + d.source.name + " " + d.predicate[i].label + " " + d.target.name;
+      						} 
+      						return text; });
+}
+
+function start2() {
+
+  link2 = link2.data(force2.links(), function(d) { return d.source.id + "-" + d.target.id; });
+  link2.enter().insert("line", ".node")
+	.attr("class", "link")
+	.style("stroke-width", 1)
+	.style("stroke", function(d) { return linkColorScale(d.predicate[0].label); })
+        .on("click",function(d){selectNetwork(d.source.network);});
+  link2.exit().remove();
+
+  node2 = node2.data(force2.nodes(), function(d) { return d.id;});
+  node2.enter().append("circle")
+	.attr("class", "node")
+	.attr("r", 20)
+	.attr("y", function(d){return d.y + 100*d.network;})
+	.style("fill", function(d) { return nodeColorScale(semanticGroupsScale(d.semtype)); })
+	.style("stroke", "#222")
+	.call(force2.drag)
+        .on("click",function(d){selectNetwork(d.network);});
+  node2.exit().remove();
+
+  labels2 = nodes2;
+  label2 = label2.data(labels2);
+  label2.enter()
+	.append("text")
+	.text(function(d) { return d.network+1;})
+	.attr("dx", 50) 
+	.attr("dy", 50)
+	.attr("fill", function(d){d.sColor = "#79B"; return d.sColor; })
+	.attr("stroke", "black")
+	.style('font-family', 'arial')
+	.style('font-size', '80px')
+	.style('font-weight', 'bold')
+	.attr("opacity", 0)
+	.call(force2.drag)
+        .on("click",function(d){selectNetwork(d.network);});
+  label2.exit().remove();
+
+  force2.start();
+}
+
+function start3() 
+{
+
+  link3 = link3.data(force3.links(), function(d) { return d.source.id + "-" + d.target.id; });
+  link3.enter().append("svg:path")
+    .on("click", function(d) { linkClick3(d); })
+	.attr("class", "link")
+	.attr("d", function(d) { return (d.path); })
+	.attr("fill", function(d) { return linkColorScale(d.predicate[0].label); })
+	.attr("stroke", function (d) { return d.sColor; })
+	.attr("opacity", 0.75)
+	.style("stroke-width", 2);
+  link3.exit().remove();
+
+  node3 = node3.data(force3.nodes(), function(d) { return d.symbol;});
+  node3.enter().append("circle")
+	.on("click", function(d) {toggleColor(d);})
+	.attr("class", "node")
+	.attr("r", 30)
+	.style("fill", function(d) {return nodeColorScale(semanticGroupsScale(d.semtype)); })
+	.style("stroke", function(d) { return d.sColor; })
+	.style("stroke-width", 3)
+	.attr("opacity", 0.75)
+	.call(force3.drag)
+  node3.exit().remove();
+
+  labels3 = nodes3;
+  label3 = label3.data(labels3, function(d) { return d.symbol;});
+  label3.enter()
+	.append("text")
+	.text(function(d) { return d.name; })
+    .on("click", function(d) {toggleColor(d);})
+	.attr("stroke-width", 0.05)
+	.attr("stroke", "white")
+	.attr("fill", "black")
+	.style('font-family', 'arial')
+	.style('font-size', '18px')
+	.style('cursor', 'pointer')
+	.call(force3.drag)
+  label3.exit().remove();
+
+  linkLabels3 = links3;
+  linkLabel3 = linkLabel3.data(linkLabels3, function(d) { return d.source.symbol + "-" + d.target.symbol; });
+  linkLabel3.enter()
+	.append("text")
+	.text(function(d) { return d.predicate[0].label;})
+    .on("click", function(d){ linkClick3(d); })
+	.attr("stroke-width", 0.05)
+	.attr("stroke", "white")
+	.attr("fill", "black")
+	.style('font-family', 'arial')
+	.style('font-size', '14px')
+	.attr("opacity", function(){ if (document.getElementById("hideLabels").value == "Hide Labels"){ return 1;} else {return 0;} })
+	.style('cursor', 'pointer')
+	.call(force3.drag);
+  linkLabel3.exit().remove();
+
+  node3.append("title")
+    .text(function(d) { return d.symbol + ": " + d.name + " (" + d.semtype + ")"; });
+ 
+  link3.append("title")
+	   .text(function(d)	{	var text = "";
+      							text += d.source.name + " " + d.predicate[0].label + " " + d.target.name;
+      							for (var i = 1; i < d.predicate.length; i++) {
+      								text += "; " + d.source.name + " " + d.predicate[i].label + " " + d.target.name;
+      							} 
+      						return text; });
+  
+  force3.start();
+}
+
+function whichCalled() {
+
+  if(callIt == "onca") {
+  openNetClickAll();
+  }
+  if(callIt == "oncc") {
+  openNetClickCommon();
+  }
+  if(callIt == "oncs") {
+  openNetClickSurprise();
+  }
+  if(callIt == "oncsg") {
+  openNetClickSemGroups(val);
+  }
+  if(callIt == "oncpg") {
+  openNetClickPredGroups(val);
+  }
+}
+
+function tick() {
+
+  var zoomValue = document.getElementById("knob1").value; 
+  var speed = document.getElementById("knob2").value * 0.17;
+  
+  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+	.style("stroke", function(d) { return d.sColor; })
+	.style("fill", function(d) { if (d.anchor == true) {return "url(#" + d.id + ".gradient)";}else{return nodeColorScale(semanticGroupsScale(d.semtype));} })
+	.attr("r", function(d) { d.degree = d.weight * 3; return (nodeScale(zoomValue) + (d.weight * 3)); });
+
+  label.attr("dx", function(d) { return (d.x - ((zoomValue*(d.name.length)) + (zoomValue*zoomValue)/5)); })
+        .attr("dy", function(d) { return d.y + (zoomValue*zoomValue)/4; })
+	.attr("opacity", 1)
+	.style('font-size', function() { return fontScale(zoomValue); });
+
+
+  link.attr("d", function(d) {
+      	var tx = d.target.x, sx = d.source.x, ty = d.target.y, sy = d.source.y, xDisp = (tx-sx), yDisp = (ty-sy);
+	var d1 = Math.sqrt(xDisp*xDisp + yDisp*yDisp);
+	var d2 = 4.5*zoomValue;
+	var d3 = d1 -d.target.weight*zoomValue;
+	var theta = Math.atan((ty-sy)/(tx-sx));
+	var x1 = sx + d2*Math.cos(theta+90);
+	var y1 = sy + d2*Math.sin(theta+90);
+	var x2 = sx + d2*Math.cos(theta-90);
+	var y2 = sy + d2*Math.sin(theta-90);
+	var x3 = sx + d3*Math.cos(theta);
+	var y3 = sy + d3*Math.sin(theta);
+
+     	return "M" + x1 + "," + y1 
+		+ "L" + (sx + xDisp*0.8) + "," + (sy + yDisp*0.8) 
+		+ "L" + x2 + "," + y2 + "z";})
+	.style("stroke-width", function() { return strokeScale(zoomValue)/5; });
+
+
+  force.stop();
+  force.linkDistance(distanceScale(zoomValue))
+	.charge(function(d){return (d.weight) * chargeScale(zoomValue);})
+	.friction(speed);
+  force.start();
+}
+
+function tick2() {
+
+  node2.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+	.attr("y", function(d){return d.y + 100*d.network;})
+	.attr("r", 20);
+
+  link2.attr("x1", function(d) { return d.source.x; })
+	.attr("y1", function(d) { return d.source.y;} )
+	.attr("x2", function(d) { return d.target.x;})
+	.attr("y2", function(d) { return d.target.y; });
+
+  label2.attr("dx", function(d) { if (d.anchor == true) {return d.x;} })
+        .attr("dy", function(d){ if (d.anchor == true){ return d.y; } })
+	.text(function(d) { return d.network+1;})
+	.attr("fill", function(d){return d.sColor;})
+	.attr("opacity", function(d){ if (d.anchor == true) {return 0.5;} else {return 0;} });
+}
+
+
+
+function tick3() {
+
+  node3.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+	.style("stroke", function(d) { return d.sColor; });
+
+  link3.attr("d", function(d){
+
+		var xNotch = 250;
+		var yNotch = 70;
+		var xDiff = d.source.x - d.target.x;
+		var yDiff = d.source.y - d.target.y;
+		
+		if (Math.abs(xDiff) > Math.abs(yDiff)){ 
+
+	  
+		  if (d.source.x < d.target.x){
+
+
+			if (d.source.fixed == false && d.target.fixed == false) {
+				d.target.x = d.source.x + xNotch;
+				d.target.y = d.source.y;
+			}
+
+			if (d.source.fixed == true && d.target.fixed == false) {
+				var children = getOtherChildren(d.source.id, d.target.id);
+				d.target.fixed = true;
+				d.target.x = d.source.x + xNotch;
+				d.target.y = d.source.y + children.length*yNotch;
+			}
+
+			if (d.source.fixed == false && d.target.fixed == true) {
+				var parents = getOtherParents(d.target.id, d.source.id);
+				d.source.fixed = true;
+				d.source.x = d.source.x - xNotch;
+				d.source.y = d.source.y + parents.length*yNotch;
+			}
+
+			var x1, x2, x3, x4, x5;
+			var y1, y2, y3, y4, y5, y6, y7;
+			x1 = d.source.x + 50;
+			x2 = d.source.x + 75
+			x3 = d.target.x -100
+			x4 = d.target.x - 75;
+			x5 = d.target.x - 50;
+
+			y1 = d.source.y - 15;
+			y2 = d.target.y - 15;
+			y3 = d.target.y - 30;
+			y4 = d.target.y;
+			y5 = d.target.y + 30;
+			y6 = d.target.y + 15;
+			y7 = d.source.y + 15;
+
+
+			return("d","M " + x1+","+y1+" L "+x2+","+y1+" L "+x3+","+y2+" L "+x4+","+y2+
+				" L "+x4+","+y3+" L "+x5+","+y4+" L "+x4+","+y5+" L "+x4+","+y6+
+				" L "+x3+","+y6+" L "+x2+","+y7+" L "+x1+","+y7+"z");
+			
+		  } 
+		
+		  else { 
+			
+			var x1, x2, x3, x4, x5;
+			var y1, y2, y3, y4, y5, y6, y7;
+			x1 = d.source.x - 50;
+			x2 = d.source.x - 75
+			x3 = d.target.x +100
+			x4 = d.target.x + 75;
+			x5 = d.target.x + 50;
+
+			y1 = d.source.y - 15;
+			y2 = d.target.y - 15;
+			y3 = d.target.y - 30;
+			y4 = d.target.y;
+			y5 = d.target.y + 30;
+			y6 = d.target.y + 15;
+			y7 = d.source.y + 15;
+
+
+			return("d","M " + x1+","+y1+" L "+x2+","+y1+" L "+x3+","+y2+" L "+x4+","+y2+
+				" L "+x4+","+y3+" L "+x5+","+y4+" L "+x4+","+y5+" L "+x4+","+y6+
+				" L "+x3+","+y6+" L "+x2+","+y7+" L "+x1+","+y7+"z");
+			
+		  }
+			
+		} else { 
+
+		  if (d.source.y < d.target.y){
+
+			var x1, x2, x3, x4, x5, x6, x7;
+			var y1, y2, y3, y4, y5;
+	
+			x1 = d.source.x - 15;
+			x2 = d.target.x - 15;
+			x3 = d.target.x - 30;
+			x4 = d.target.x;
+			x5 = d.target.x + 30;
+			x6 = d.target.x + 15;
+			x7 = d.source.x + 15;
+
+			y1 = d.source.y + 50;
+			y2 = d.source.y + 75
+			y3 = d.target.y -100
+			y4 = d.target.y - 75;
+			y5 = d.target.y - 50;
+
+			return("d","M " + x1+","+y1+" L "+x1+","+y2+" L "+x2+","+y3+" L "+x2+","+y4+
+				" L "+x3+","+y4+" L "+x4+","+y5+" L "+x5+","+y4+" L "+x6+","+y4+
+				" L "+x6+","+y3+" L "+x7+","+y2+" L "+x7+","+y1+"z");
+			
+		  } 
+		  else {
+			  
+				var x1, x2, x3, x4, x5, x6, x7;
+				var y1, y2, y3, y4, y5;
+		
+				x1 = d.source.x - 15;
+				x2 = d.target.x - 15;
+				x3 = d.target.x - 30;
+				x4 = d.target.x;
+				x5 = d.target.x + 30;
+				x6 = d.target.x + 15;
+				x7 = d.source.x + 15;
+
+				y1 = d.source.y - 50;
+				y2 = d.source.y - 75
+				y3 = d.target.y +100
+				y4 = d.target.y + 75;
+				y5 = d.target.y + 50;
+
+				return("d","M " + x1+","+y1+" L "+x1+","+y2+" L "+x2+","+y3+" L "+x2+","+y4+
+					" L "+x3+","+y4+" L "+x4+","+y5+" L "+x5+","+y4+" L "+x6+","+y4+
+					" L "+x6+","+y3+" L "+x7+","+y2+" L "+x7+","+y1+"z");
+				
+		  }
+		} 
+	});
+  link3.style("stroke", function(d) { return d.sColor; });
+
+  label3.attr("dx", function(d) { return d.x - 30; })
+        .attr("dy", function(d){ return d.y - 10; });
+
+  linkLabel3.attr("dx", function(d) { return (d.target.x+d.source.x)/2 - 60; })
+    .attr("dy", function(d){ return (d.target.y+d.source.y)/2 + 5; })
+	.text(function(d) { return d.predicate[0].label;})
+	.attr("opacity", function(){ if (document.getElementById("hideLabels").value == "Hide Labels"){ return 1;} else {return 0;} });
+
+	start3();
+}
+
+function openNetClickAll()
+{
+  
+
+  if (searchResult.length < 2)
+  {
+	alert("Please run a search query");
+	return;
+  }
+
+  
+				
+ 
+	
+	if (testNum == 25){
+  
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();		
+			
+		}
+		
+	searchResult.randomize();
+	
+    currentNetwork = networks.length;
+		
+		
+  
+  
+
+  var cuiCount = {}; 
+  var cName = "";
+  var cType = "";
+  var cuiCountLength = 0;
+  var maxCount = 0;
+
+  for (var i = 0; i < searchResult.length; i++){
+	cName = clean(searchResult[i][predColumn("s_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("s_type")], "|||");
+	
+		if(!cuiCount[cName])
+		{
+		cuiCountLength += 1;;  
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;
+		}
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+		
+	cName = clean(searchResult[i][predColumn("o_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("o_type")], "|||");
+	
+		if(!cuiCount[cName])
+		{
+		cuiCountLength += 1;  
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;
+		}
+		
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))  // C0030705	
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+  
+    }
+
+	
+	if(altAnchorCui != "")  
+	{cuiAnchor = altAnchorCui;}
+	
+	var onePath = []; 
+	var onePathSortA = [];
+	var onePathSort = [];
+	var tName = "";
+	var tNameT = "";
+	
+	for (var i = 0; i < searchResult.length; i++){
+		tName = clean(searchResult[i][predColumn("s_cui")], "|||");
+		tNameT = clean(searchResult[i][predColumn("o_cui")], "|||");
+		
+		if(tName == cuiAnchor && tNameT != cuiAnchor)  // filter out circular predications, too
+		{
+		  onePath.push(tNameT);
+		}
+		
+		if(tNameT == cuiAnchor && tName != cuiAnchor)
+		{
+		  onePath.push(tName);
+		}
+	}
+	
+	var randomCUIs = [];
+	var randomNetwork = [];
+	var randomNetwork2 = [];
+
+		
+		var keys = [];
+		for(var key in cuiCount){
+		keys.push(key);
+		}
+		
+		sKeys = keys.sort(function(a,b){return cuiCount[a]-cuiCount[b]});
+		
+		
+		for(var i = 0; i < sKeys.length; i++)
+		{
+		
+			for(var j = 0; j < onePath.length; j++)
+			{
+			
+				if(sKeys[i] == onePath[j])
+				{
+				  onePathSortA.push(onePath[j]); 
+				}
+			
+			}
+		
+		}
+		
+			var tempU = [];
+		for(var q = 0; q < onePathSortA.length; q++)
+		{
+		
+				if(tempU.indexOf(onePathSortA[q]) < 0)
+				{
+				onePathSort.push(onePathSortA[q]);				
+				}
+				
+				tempU.push(onePathSortA[q]);	
+		
+		}
+		
+		
+		var testV = [];
+		var cA = onePathSort.length;
+		
+		document.getElementById("resultPanel").innerHTML = "Connected nodes: "  + cA;
+		
+			var j = 0;
+			
+			
+			var cLimit = 0;
+			
+			if(onePathSort.length > 30)
+			{
+			cLimit = 3;
+			}
+			
+
+			
+
+			while(j < 7)
+			{  
+				var c1 = Math.floor((Math.random()* cA));  
+				if(!testV.indexOf(c1) > -1)  
+				{
+				testV.push(c1);
+					for(var y = 0; y < onePathSort.length; y++)
+					{
+						if((testUCommonA.indexOf(onePathSort[y]) > -1))
+						{
+						continue;
+						}
+						else if((y == c1) && (onePathSort[y] != cuiAnchor))
+						{
+						randomCUIs.push(onePathSort[y]);  
+						testUCommonA.push(onePathSort[y]);
+						}
+						
+					}
+				j++;
+				}
+				else
+				{
+				continue;
+				}
+			
+			}
+			
+			cArrCounterA++;
+			
+			if(cArrCounterA > cLimit)
+			{
+				testUCommonA.splice(0, testUCommonA.length);   
+				cArrCounterA = 0;
+			}
+			
+		
+		randomNetwork = randomCUIs;
+		randomNetwork.push(cuiAnchor);  
+		randonNetwork2 = randomNetwork;
+		
+		
+
+	
+	
+	var terms = "" + document.getElementById("searchTerm").value;  
+	networks.push({id:currentNetwork, searchTerms:terms,   
+		fileName:"", nodes:[], links:[]}); 
+		
+	var nodeIdCounter = 0;
+	var tSubjA = [];
+	var tObjA = [];
+	var tPa = [];
+	var tArgs = [];
+	var tArg = [];
+	var tSubjB = [];
+	var tObjB = [];
+	var tPb = [];
+	var tPattern = [];
+	var tPatternAgain = [];
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+
+		
+		
+			
+				var tSCui = clean(searchResult[i][predColumn("s_cui")], "|||")
+				var tOCui = clean(searchResult[i][predColumn("o_cui")], "|||")
+				var tPredC = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAllC1 = tSCui + tPredC + tOCui;
+				var tAllC2 = tOCui + tPredC + tSCui;
+				
+				//THESE NEXT TWO VARIABLES ONLY FOR USE IN BUILDING CONTEXT MENU
+				var cMSName = clean(searchResult[i][predColumn("s_name")], "|||");
+				var cMOName = clean(searchResult[i][predColumn("o_name")], "|||");
+				
+				if(onePathSort.length > 4) {
+				
+					if(tSCui == onePathSort[onePathSort.length - 1]) {
+					$("#linkItem1").html(cMSName);
+					altAnchorCui1 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 1]) { 
+					$("#linkItem1").html(cMOName);
+					altAnchorCui1 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 2]) { 
+					$("#linkItem2").html(cMSName);
+					altAnchorCui2 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 2]) {
+					$("#linkItem2").html(cMOName);
+					altAnchorCui2 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMSName);
+					altAnchorCui3 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMOName);
+					altAnchorCui3 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMSName);
+					altAnchorCui4 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMOName);
+					altAnchorCui4 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMSName);
+					altAnchorCui5 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMOName);
+					altAnchorCui5 = tOCui;
+					}
+					
+					callIt = "onca";
+				}
+				
+				else{
+					
+					$("#linkItem1").html("insufficient data");
+					$("#linkItem2").html("");
+					$("#linkItem3").html("");
+					$("#linkItem4").html("");
+					$("#linkItem5").html("");
+					altAnchorCui1 = "";
+					altAnchorCui2 = "";
+					altAnchorCui3 = "";
+					altAnchorCui4 = "";
+					altAnchorCui5 = "";
+					callIt = "";
+				
+				}
+				
+			
+			
+			if(((tSCui == cuiAnchor) && ($.inArray( tOCui, randomCUIs) > -1)) || ((tOCui == cuiAnchor) && ($.inArray( tSCui, randomCUIs) > -1)) ) // if either the subject or object is the anchor, and there are no circular arguments...
+				{ 
+					tArg.push(tSubj);
+					tArg.push(tObj);
+					tPb.push(tPred);
+				  
+				  if(((!$.inArray( tSCui, tSubjA) > -1 ) && (!$.inArray( tOCui, tObjA) > -1 ) && (!$.inArray( tPredC, tPa) > -1 )))  
+					{
+						tPattern.push(tAllC1); 
+						tPatternAgain.push(tAllC2);
+						tSubjA.push(tSCui);
+						tObjA.push(tOCui);
+						tPa.push(tPredC);
+						
+						var node1 = { id:" ", anchor:"", sColor:"black", visible:true }; 
+						node1.network = currentNetwork; 
+						node1.id = "" + currentNetwork + "." + nodeIdCounter;  
+						node1.symbol = clean(searchResult[i][predColumn("s_cui")], "|||");  
+						node1.name = clean(searchResult[i][predColumn("s_name")], "|||");   
+						node1.semtype = clean(searchResult[i][predColumn("s_type")], "|||");  
+						node1.novel = searchResult[i][predColumn("s_novel")];  
+						node1.x = 200;  
+						node1.y = 200;
+						
+						if (findNode(node1.symbol, currentNetwork) == -1){  
+
+							networks[currentNetwork].nodes.push(node1);  
+							nodeIdCounter++;
+
+						}
+
+						var node2 = { id:" ", anchor:"", sColor:"black", visible:true }; 
+						node2.network = currentNetwork;
+						node2.id = "" + currentNetwork + "." + nodeIdCounter + ".5";  
+						node2.symbol = clean(searchResult[i][predColumn("o_cui")], "|||");  
+						node2.name =  clean(searchResult[i][predColumn("o_name")], "|||");
+						node2.semtype = clean(searchResult[i][predColumn("o_type")], "|||");
+						node2.novel = searchResult[i][predColumn("o_novel")];
+						node2.x = 200;
+						node2.y = 200;
+
+						if (findNode(node2.symbol, currentNetwork) == -1){ 
+							networks[currentNetwork].nodes.push(node2);  
+							nodeIdCounter++;
+							
+							
+						}
+					}
+				}
+		
+	}
+	
+			
+	var sTestA = [];
+	var oTestA = [];
+			
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+	
+						
+				
+				var subj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var obj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var pred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tSubj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var tObj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAll1 = tSubj + tPred +  tObj;
+				var tAll2 = tObj + tPred + tSubj;
+				var sTest = tSubj + tObj;
+				var oTest = tObj + tSubj;
+				var sT = subj + obj;
+				var oT = obj + subj;
+				
+		if(((subj == cuiAnchor) && ($.inArray( obj, randomCUIs) > -1 )   ) || ((obj == cuiAnchor) && ($.inArray( subj, randomCUIs) > -1 )))
+		{
+			if((!$.inArray( sTest, tArgs) > -1 ) && (!$.inArray( oTest, tArgs) > -1 ))  
+			{
+				tArgs.push(sTest);
+				tArgs.push(oTest);
+				tPb.push(tPred);
+				tArg.push(tSubj);
+				tArg.push(tObj);
+				tPb.push(tPred);
+				
+				if(($.inArray(tAll1, tPattern) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) )) 
+					{
+					
+						
+							sTestA.push(sTest);
+							tPattern.push(sT);
+							
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };   
+						
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];                                                         
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];  
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+							else { networks[currentNetwork].links.push(link1); }  
+							
+							
+							
+							
+							
+
+							
+					}
+					
+						
+
+				else if(($.inArray(tAll2, tPatternAgain) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+
+						{
+						
+						oTestA.push(oTest);
+						tPattern.push(oT);
+						
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };  
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"), 
+															currentNetwork)];                                                           
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+
+							else { networks[currentNetwork].links.push(link1); }  
+							
+						}
+						
+						else { continue; }
+					
+			}		
+		}
+	} 
+
+		if (nodes.length == 7) {
+		if (nodes[1].symbol == "B") {
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+	viewNetwork(currentNetwork,1); 
+	createAnchorGradient(cuiAnchor);
+	
+	start();
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1); 
+	}
+
+
+	svg1.style("opacity", function(){return 1e-6;})
+		.transition()
+		.duration(2000)
+		.style("opacity", function(){return 1;});
+
+	
+	
+
+	function findNode(symb, net) {  
+		for (var i = 0; i < networks[net].nodes.length; i++) {
+
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {  
+				return i;																		   
+			}
+		}
+
+		return -1;
+	}
+	
+	
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	function findPredicate(predicate1, linkIndex, net) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+
+	
+function clean(text, stop){
+		var found = text.indexOf(stop);
+		if (found != -1) return text.substr(0,found); else return text;
+	}
+
+
+	
+}
+
+function openNetClickCommon()  
+{
+
+	if (searchResult.length < 2)
+  {
+	alert("Please run a search query");
+	return;
+  }
+ 
+  
+  if (testNum == 25){
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();
+			
+		}
+  
+currentNetwork = networks.length;
+ 
+searchResult.randomize();
+
+  
+  var cuiCount = {}; 
+  var cName = "";
+  var cType = "";
+  var cuiCountLength = 0;
+  var maxCount = 0;
+  
+ 
+  
+  for (var i = 0; i < searchResult.length; i++){
+	cName = clean(searchResult[i][predColumn("s_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("s_type")], "|||");
+	
+		if(!cuiCount[cName])
+		{
+		cuiCountLength += 1;
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;
+		}
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675")&& (cName !="C0030705"))
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+		
+	cName = clean(searchResult[i][predColumn("o_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("o_type")], "|||");
+	
+		if(!cuiCount[cName])
+		{
+		cuiCountLength += 1;  
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;
+		}
+		
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675")&& (cName !="C0030705"))
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+  
+    }
+
+	if(altAnchorCui != "") {
+	cuiAnchor = altAnchorCui;
+	}
+	
+	var onePath = []; 
+	var onePathSort = [];
+	var onePathSortA = [];
+	var tName = "";
+	var tNameT = "";
+	
+	for (var i = 0; i < searchResult.length; i++){
+		tName = clean(searchResult[i][predColumn("s_cui")], "|||");
+		tNameT = clean(searchResult[i][predColumn("o_cui")], "|||");
+		
+		if(tName == cuiAnchor && tNameT != cuiAnchor)  
+		{
+		  onePath.push(tNameT);
+		}
+		
+		if(tNameT == cuiAnchor && tName != cuiAnchor)
+		{
+		  onePath.push(tName);
+		}
+	}
+	
+	var randomCUIs = [];
+	var randomNetwork = [];
+	var randomNetwork2 = [];
+	
+		
+		var keys = [];
+		for(var key in cuiCount){
+		keys.push(key);
+		}
+		
+		sKeys = keys.sort(function(a,b){return cuiCount[a]-cuiCount[b]});
+		
+		
+		for(var i = 0; i < sKeys.length; i++)
+		{
+		
+			for(var j = 0; j < onePath.length; j++)
+			{
+			
+				if(sKeys[i] == onePath[j])
+				{
+				  onePathSortA.push(onePath[j]);  
+				  
+				 
+				}
+			
+			}
+		
+		}
+		
+		var tempU = [];
+		for(var q = 0; q < onePathSortA.length; q++)
+		{
+		
+				if(tempU.indexOf(onePathSortA[q]) < 0)
+				{
+				onePathSort.push(onePathSortA[q]);				
+				}
+				
+				tempU.push(onePathSortA[q]);	
+		
+		}
+		
+		
+		
+		
+		
+		testV = [];
+		
+
+		
+		
+		var cL = onePathSort.length;
+		
+		var cA = Math.round(onePathSort.length * .20); 
+
+		
+		
+		document.getElementById("resultPanel").innerHTML = "Connected nodes: "  + cA;
+		
+		
+		var cP = onePathSort.length - cA;  
+			var n = onePathSort.length;
+			var j = 0;
+
+			var cLimit = 0;
+			
+			if(onePathSort.length > 30)
+			{
+			cLimit = 3;
+			}
+
+			
+			while(j < 7)
+			{  
+				var c1 = Math.round((Math.random() * (cL - cP) + cP));
+				if(!testV.indexOf(c1) > -1)  // either of these work
+				{
+				testV.push(c1);
+					for(var y = 0; y < onePathSort.length; y++)
+					{
+						if((testUCommonB.indexOf(onePathSort[y]) > -1))
+						{
+						continue;
+						}
+						else if((y == c1) && (onePathSort[y] != cuiAnchor))
+						{
+						randomCUIs.push(onePathSort[y]);  // this has been tested
+						testUCommonB.push(onePathSort[y]);
+						
+						}
+						
+					}
+				j++;
+				}
+				else
+				{
+				continue;
+				}
+			
+			}
+			
+			cArrCounterB++;
+			
+			if(cArrCounterB > cLimit)
+			{
+				testUCommonB.splice(0, testUCommonB.length);   // clear this filter after the cLimit cycle amount
+				cArrCounterB = 0;
+			}
+			
+			
+	
+		
+		randomNetwork = randomCUIs;
+		randomNetwork.push(cuiAnchor);  
+		randonNetwork2 = randomNetwork;
+		
+		
+
+	
+	
+	var terms = "" + document.getElementById("searchTerm").value;  
+	networks.push({id:currentNetwork, searchTerms:terms,   
+		fileName:"", nodes:[], links:[]});  
+		
+	var nodeIdCounter = 0;
+	
+	var tSubjA = [];
+	var tObjA = [];
+	var tPa = [];
+	var tArgs = [];
+	var tArg = [];
+	var tSubjB = [];
+	var tObjB = [];
+	var tPb = [];
+	var tPattern = [];
+	var tPatternAgain = [];
+	for (var i = 0; i < searchResult.length; i++)  
+	{
+
+		
+		
+			
+				var tSCui = clean(searchResult[i][predColumn("s_cui")], "|||")
+				var tOCui = clean(searchResult[i][predColumn("o_cui")], "|||")
+				var tPredC = clean(searchResult[i][predColumn("predicate")], "|||");
+				
+				//THESE NEXT TWO VARIABLES ONLY FOR USE IN BUILDING CONTEXT MENU
+				var cMSName = clean(searchResult[i][predColumn("s_name")], "|||");
+				var cMOName = clean(searchResult[i][predColumn("o_name")], "|||");
+				
+				if(onePathSort.length > 4) {
+				
+					if(tSCui == onePathSort[onePathSort.length - 1]) {
+					$("#linkItem1").html(cMSName);
+					altAnchorCui1 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 1]) { 
+					$("#linkItem1").html(cMOName);
+					altAnchorCui1 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 2]) { 
+					$("#linkItem2").html(cMSName);
+					altAnchorCui2 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 2]) {
+					$("#linkItem2").html(cMOName);
+					altAnchorCui2 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMSName);
+					altAnchorCui3 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMOName);
+					altAnchorCui3 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMSName);
+					altAnchorCui4 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMOName);
+					altAnchorCui4 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMSName);
+					altAnchorCui5 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMOName);
+					altAnchorCui5 = tOCui;
+					}
+					
+					callIt = "oncc";
+				}
+				
+				else{
+					
+					$("#linkItem1").html("insufficient data");
+					$("#linkItem2").html("");
+					$("#linkItem3").html("");
+					$("#linkItem4").html("");
+					$("#linkItem5").html("");
+					altAnchorCui1 = "";
+					altAnchorCui2 = "";
+					altAnchorCui3 = "";
+					altAnchorCui4 = "";
+					altAnchorCui5 = "";
+					callIt = "";
+				
+				}
+				var tAllC1 = tSCui + tPredC + tOCui;
+				var tAllC2 = tOCui + tPredC + tSCui;
+			
+			if(((tSCui == cuiAnchor) && ($.inArray( tOCui, randomCUIs) > -1)) || ((tOCui == cuiAnchor) && ($.inArray( tSCui, randomCUIs) > -1)) ) 
+				{ 
+					tArg.push(tSubj);
+					tArg.push(tObj);
+					tPb.push(tPred);
+				  
+				  if(((!$.inArray( tSCui, tSubjA) > -1 ) && (!$.inArray( tOCui, tObjA) > -1 ) && (!$.inArray( tPredC, tPa) > -1 )))  
+					{
+						tPattern.push(tAllC1);  
+						tPatternAgain.push(tAllC2);
+						tSubjA.push(tSCui);
+						tObjA.push(tOCui);
+						tPa.push(tPredC);
+						
+						var node1 = { id:" ", anchor:false, sColor:"black", visible:true };  
+						node1.network = currentNetwork; 
+						node1.id = "" + currentNetwork + "." + nodeIdCounter;  
+						node1.symbol = clean(searchResult[i][predColumn("s_cui")], "|||");  
+						node1.name = clean(searchResult[i][predColumn("s_name")], "|||");  
+						node1.semtype = clean(searchResult[i][predColumn("s_type")], "|||"); 
+						node1.novel = searchResult[i][predColumn("s_novel")]; 
+						node1.x = 200;  
+						node1.y = 200;
+						
+
+						if (findNode(node1.symbol, currentNetwork) == -1){  
+
+							networks[currentNetwork].nodes.push(node1);  
+							nodeIdCounter++;
+
+						}
+				
+					  
+					
+				
+						var node2 = { id:" ", anchor:false, sColor:"black", visible:true };  
+
+						node2.network = currentNetwork;
+						node2.id = "" + currentNetwork + "." + nodeIdCounter + ".5";  
+						node2.symbol = clean(searchResult[i][predColumn("o_cui")], "|||");  
+						node2.name =  clean(searchResult[i][predColumn("o_name")], "|||");
+						node2.semtype = clean(searchResult[i][predColumn("o_type")], "|||");
+						node2.novel = searchResult[i][predColumn("o_novel")];
+						node2.x = 200;
+						node2.y = 200;
+
+						if (findNode(node2.symbol, currentNetwork) == -1){ 
+							networks[currentNetwork].nodes.push(node2);  
+							nodeIdCounter++;
+						}
+					}
+				}
+		
+	}
+	
+			
+	var sTestA = [];
+	var oTestA = [];
+			
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+	
+						
+				
+				var subj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var obj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var pred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tSubj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var tObj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAll1 = tSubj + tPred +  tObj;
+				var tAll2 = tObj + tPred + tSubj;
+				var sTest = tSubj + tObj;
+				var oTest = tObj + tSubj;
+				var sT = subj + obj;
+				var oT = obj + subj;
+				
+		if(((subj == cuiAnchor) && ($.inArray( obj, randomCUIs) > -1 )   ) || ((obj == cuiAnchor) && ($.inArray( subj, randomCUIs) > -1 )))
+		{
+			if((!$.inArray( sTest, tArgs) > -1 ) && (!$.inArray( oTest, tArgs) > -1 ))  
+			{
+				tArgs.push(sTest);
+				tArgs.push(oTest);
+				tPb.push(tPred);
+				tArg.push(tSubj);
+				tArg.push(tObj);
+				tPb.push(tPred);
+				
+				if(($.inArray(tAll1, tPattern) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+					{
+					
+						
+							sTestA.push(sTest);
+							tPattern.push(sT);
+							
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };   						
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];                                                         
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")]; 
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];   
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+								if (predicateFound != -1 ) {
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+							else { networks[currentNetwork].links.push(link1); }  
+
+							
+					}
+					
+						
+				else if(($.inArray(tAll2, tPatternAgain) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+
+						{
+						
+						oTestA.push(oTest);
+						tPattern.push(oT);
+						
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };  
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"), 
+															currentNetwork)];                                                           
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+
+							else { networks[currentNetwork].links.push(link1); }  
+							
+						}
+						
+						else { continue; }  
+					
+			}		
+		}
+	} 
+
+	if (nodes.length == 7) {
+		if (nodes[1].symbol == "B") {
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+
+	
+	
+	viewNetwork(currentNetwork,1);
+	
+	start();
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1);
+	}
+
+	svg1.style("opacity", function(){return 1e-6;})
+		.transition()
+		.duration(2000)
+		.style("opacity", function(){return 1;});
+
+
+	randomCUIs.splice(0, randomCUIs.length);
+	
+
+	function findNode(symb, net) {  
+		for (var i = 0; i < networks[net].nodes.length; i++) {
+
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {  
+				return i;																		  
+			}
+		}
+
+		return -1;
+	}
+	
+	
+	
+	
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	function findPredicate(predicate1, linkIndex, net) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+
+	
+function clean(text, stop){
+		var found = text.indexOf(stop);
+		if (found != -1) return text.substr(0,found); else return text;
+	}
+
+
+	
+}
+
+function openNetClickSurprise()
+{
+
+	if (searchResult.length < 2)
+  {
+	alert("Please run a search query");
+	return;
+  }
+ 
+ if (testNum == 25){
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();
+			
+		}
+  
+	
+	
+	 currentNetwork = networks.length;
+	 
+	 searchResult.randomize();		
+			
+  
+  
+  var cuiCount = {}; // the hash for CUI counts
+  var cName = "";
+  var cType = "";
+  var cuiCountLength = 0;
+  var maxCount = 0;
+  
+  for (var i = 0; i < searchResult.length; i++){
+	cName = clean(searchResult[i][predColumn("s_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("s_type")], "|||");
+	
+		if(!cuiCount[cName])  
+		{
+		cuiCountLength += 1;  
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;  
+		}
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+		
+	cName = clean(searchResult[i][predColumn("o_cui")], "|||");
+	cType = clean(searchResult[i][predColumn("o_type")], "|||");
+	
+		if(!cuiCount[cName])
+		{
+		cuiCountLength += 1;  
+		cuiCount[cName] = 1;
+		}
+		else
+		{
+		cuiCount[cName] += 1;
+		}
+		
+		if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+		{
+		maxCount = cuiCount[cName];
+		cuiAnchor = cName;
+		}
+  
+    }
+	
+	if(altAnchorCui != ""){
+	cuiAnchor = altAnchorCui;
+	}
+	
+	var onePath = []; 
+	var tName = "";
+	var tNameT = "";
+	
+	for (var i = 0; i < searchResult.length; i++){
+		tName = clean(searchResult[i][predColumn("s_cui")], "|||");
+		tNameT = clean(searchResult[i][predColumn("o_cui")], "|||");
+		
+		if(tName == cuiAnchor && tNameT != cuiAnchor)  
+		{
+		  onePath.push(tNameT);
+		}
+		
+		if(tNameT == cuiAnchor && tName != cuiAnchor)
+		{
+		  onePath.push(tName);
+		}
+	}
+	
+	
+	var randomCUIs = [];
+	var randomNetwork = [];
+	var randomNetwork2 = [];
+	var onePathSortA = [];
+	var onePathSort = [];
+
+		
+		var keys = [];
+		
+		for(var key in cuiCount){
+		keys.push(key);
+		}
+		
+        sKeys = keys.sort(function(a,b){return cuiCount[a]-cuiCount[b]});
+		
+		for(var i = 0; i < sKeys.length; i++)
+		{
+		
+			for(var j = 0; j < onePath.length; j++)
+			{
+			
+				if(sKeys[i] == onePath[j])
+				{
+				  onePathSortA.push(onePath[j]);  
+				}
+			
+			}
+		
+		}
+		
+		
+		var tempU = [];
+		for(var q = 0; q < onePathSortA.length; q++)
+		{
+		
+				if(tempU.indexOf(onePathSortA[q]) < 0)
+				{
+				onePathSort.push(onePathSortA[q]);				
+				}
+				
+				tempU.push(onePathSortA[q]);	
+		
+		}
+		
+		
+		 
+		var testV = [];
+		var cA = Math.round(onePathSort.length * .35);  
+		
+		document.getElementById("resultPanel").innerHTML = "Connected nodes: "  + cA;
+		
+			var j = 0;
+			
+			var cLimit = 0;
+			
+			if(onePathSort.length > 30)
+			{
+			cLimit = 3;
+			}
+			
+
+			while(j < 7)
+			{  
+				var c1 = Math.floor((Math.random()* cA));  
+				if(!testV.indexOf(c1) > -1) 
+				{
+				testV.push(c1);
+					for(var y = 0; y < onePathSort.length; y++)
+					{
+						if((testUCommonC.indexOf(onePathSort[y]) > -1))
+						{
+						continue;
+						}
+						else if((y == c1) && (onePathSort[y] != cuiAnchor))
+						{
+						randomCUIs.push(onePathSort[y]);  
+						testUCommonC.push(onePathSort[y]);
+						}
+						
+					}
+				j++;
+				}
+				else
+				{
+				continue;
+				}
+			
+			}
+			
+			cArrCounterC++;
+			
+			if(cArrCounterC > cLimit)
+			{
+				testUCommonC.splice(0, testUCommonC.length);   
+				cArrCounterC = 0;
+			}
+			
+		
+		
+		
+		randomNetwork = randomCUIs;
+		randomNetwork.push(cuiAnchor); 
+		randonNetwork2 = randomNetwork;
+		
+
+	
+	var terms = "" + document.getElementById("searchTerm").value;  
+	networks.push({id:currentNetwork, searchTerms:terms,   
+		fileName:"", nodes:[], links:[]}); 
+	
+	var nodeIdCounter = 0;
+var tSubjA = [];
+	var tObjA = [];
+	var tPa = [];
+	var tArgs = [];
+	var tArg = [];
+	var tSubjB = [];
+	var tObjB = [];
+	var tPb = [];
+	var tPattern = [];
+	var tPatternAgain = [];
+
+	for (var i = 0; i < searchResult.length; i++)    
+	{
+
+		
+		
+			
+				var tSCui = clean(searchResult[i][predColumn("s_cui")], "|||")
+				var tOCui = clean(searchResult[i][predColumn("o_cui")], "|||")
+				var tPredC = clean(searchResult[i][predColumn("predicate")], "|||");
+				
+				//THESE NEXT TWO VARIABLES ONLY FOR USE IN BUILDING CONTEXT MENU
+				var cMSName = clean(searchResult[i][predColumn("s_name")], "|||");
+				var cMOName = clean(searchResult[i][predColumn("o_name")], "|||");
+				
+				if(onePathSort.length > 4) {
+				
+					if(tSCui == onePathSort[onePathSort.length - 1]) {
+					$("#linkItem1").html(cMSName);
+					altAnchorCui1 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 1]) { 
+					$("#linkItem1").html(cMOName);
+					altAnchorCui1 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 2]) { 
+					$("#linkItem2").html(cMSName);
+					altAnchorCui2 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 2]) {
+					$("#linkItem2").html(cMOName);
+					altAnchorCui2 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMSName);
+					altAnchorCui3 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 3]) { 
+					$("#linkItem3").html(cMOName);
+					altAnchorCui3 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMSName);
+					altAnchorCui4 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 4]) { 
+					$("#linkItem4").html(cMOName);
+					altAnchorCui4 = tOCui;
+					}
+					if(tSCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMSName);
+					altAnchorCui5 = tSCui;
+					}
+					if(tOCui == onePathSort[onePathSort.length - 5]) { 
+					$("#linkItem5").html(cMOName);
+					altAnchorCui5 = tOCui;
+					}
+					
+					callIt = "oncs";
+				}
+				
+				else{
+					
+					$("#linkItem1").html("insufficient data");
+					$("#linkItem2").html("");
+					$("#linkItem3").html("");
+					$("#linkItem4").html("");
+					$("#linkItem5").html("");
+					altAnchorCui1 = "";
+					altAnchorCui2 = "";
+					altAnchorCui3 = "";
+					altAnchorCui4 = "";
+					altAnchorCui5 = "";
+					callIt = "";
+				
+				}
+				
+				var tAllC1 = tSCui + tPredC + tOCui;
+				var tAllC2 = tOCui + tPredC + tSCui;
+			
+
+			if(((tSCui == cuiAnchor) && ($.inArray( tOCui, randomCUIs) > -1)) || ((tOCui == cuiAnchor) && ($.inArray( tSCui, randomCUIs) > -1)) ) 
+				{ 
+					tArg.push(tSubj);
+					tArg.push(tObj);
+					tPb.push(tPred);
+				  
+				  if(((!$.inArray( tSCui, tSubjA) > -1 ) && (!$.inArray( tOCui, tObjA) > -1 ) && (!$.inArray( tPredC, tPa) > -1 )))  
+					{
+						tPattern.push(tAllC1);  
+						tPatternAgain.push(tAllC2);
+						tSubjA.push(tSCui);
+						tObjA.push(tOCui);
+						tPa.push(tPredC);
+						
+						var node1 = { id:" ", anchor:false, sColor:"black", visible:true };  
+						node1.network = currentNetwork;  
+						node1.id = "" + currentNetwork + "." + nodeIdCounter;  
+						node1.symbol = clean(searchResult[i][predColumn("s_cui")], "|||");  
+						node1.name = clean(searchResult[i][predColumn("s_name")], "|||");   
+						node1.semtype = clean(searchResult[i][predColumn("s_type")], "|||");  
+						node1.novel = searchResult[i][predColumn("s_novel")]; 
+						node1.x = 200;  
+						node1.y = 200;
+						
+
+						if (findNode(node1.symbol, currentNetwork) == -1){  
+
+							networks[currentNetwork].nodes.push(node1);  
+							nodeIdCounter++;
+
+						}
+				
+					  
+					
+				
+						var node2 = { id:" ", anchor:false, sColor:"black", visible:true }; 
+
+						node2.network = currentNetwork;
+						node2.id = "" + currentNetwork + "." + nodeIdCounter + ".5";  
+						node2.symbol = clean(searchResult[i][predColumn("o_cui")], "|||");  
+						node2.name =  clean(searchResult[i][predColumn("o_name")], "|||");
+						node2.semtype = clean(searchResult[i][predColumn("o_type")], "|||");
+						node2.novel = searchResult[i][predColumn("o_novel")];
+						node2.x = 200;
+						node2.y = 200;
+						
+						if (findNode(node2.symbol, currentNetwork) == -1){  
+							networks[currentNetwork].nodes.push(node2);  
+							nodeIdCounter++;
+						}
+					}
+				}
+		
+	}
+	
+			
+	var sTestA = [];
+	var oTestA = [];
+			
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+	
+						
+				
+				var subj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var obj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var pred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tSubj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var tObj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAll1 = tSubj + tPred +  tObj;
+				var tAll2 = tObj + tPred + tSubj;
+				var sTest = tSubj + tObj;
+				var oTest = tObj + tSubj;
+				var sT = subj + obj;
+				var oT = obj + subj;
+				
+		if(((subj == cuiAnchor) && ($.inArray( obj, randomCUIs) > -1 )   ) || ((obj == cuiAnchor) && ($.inArray( subj, randomCUIs) > -1 )))
+		{
+			if((!$.inArray( sTest, tArgs) > -1 ) && (!$.inArray( oTest, tArgs) > -1 ))  
+			{
+				tArgs.push(sTest);
+				tArgs.push(oTest);
+				tPb.push(tPred);
+				tArg.push(tSubj);
+				tArg.push(tObj);
+				tPb.push(tPred);
+				
+				if(($.inArray(tAll1, tPattern) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) )) 
+					{
+					
+						
+							sTestA.push(sTest);
+							tPattern.push(sT);
+							
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };   
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];                                                         
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork); 
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]);
+								}
+							}
+
+							else { networks[currentNetwork].links.push(link1); }  
+
+							
+					}
+					
+						
+				else if(($.inArray(tAll2, tPatternAgain) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+
+						{
+						
+						oTestA.push(oTest);
+						tPattern.push(oT);
+						
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };   
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"), 
+															currentNetwork)];                                                           
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]); 
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+
+							else { networks[currentNetwork].links.push(link1); } 
+							
+						}
+						
+						else { continue; }
+					
+			}		
+		}
+	} 
+
+	if (nodes.length == 7) {
+		if (nodes[1].symbol == "B") {
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+
+	
+		
+	viewNetwork(currentNetwork,1);
+
+	
+	start();
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1);
+	}
+
+
+	svg1.style("opacity", function(){return 1e-6;})
+		.transition()
+		.duration(2000)
+		.style("opacity", function(){return 1;});
+
+	
+
+	
+
+	function findNode(symb, net) {  
+		for (var i = 0; i < networks[net].nodes.length; i++) {
+
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {  
+				return i;																		  
+			}
+		}
+
+		return -1;
+	}
+	
+	
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	function findPredicate(predicate1, linkIndex, net) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+
+	
+function clean(text, stop){
+		var found = text.indexOf(stop);
+		if (found != -1) return text.substr(0,found); else return text;
+	}
+
+
+	
+}
+
+function openNetClickSemGroups(value)
+{
+
+
+  if (searchResult.length < 2)
+  {
+	alert("Please run a search query");
+	var newValue = -1; 
+	document.getElementById("bySemGroup").value = newValue;	
+	return;
+  }
+
+ 
+  if (testNum == 25) {
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();
+			
+			
+		}
+
+	currentNetwork = networks.length;  
+	
+	searchResult.randomize();
+	
+	var tGrpA = [];
+  
+    val = value;
+	
+	var newValue = -1; 
+	document.getElementById("bySemGroup").value = newValue;	
+
+	
+	var anatA = ["anst", "blor", "bpoc", "bsoj", "bdsu", "bdsy", "cell", "celc", "emst", "ffas", "tisu"];
+	var drugsChemA = ["aapp", "antb", "bacs", "bodm", "carb", "chem", "chvf", "chvs", "clnd", "eico", "elii", "enzy", "hops", "horm", "imft", "irda", "inch", "lipd", "nsba", "nnon", "orch", "opco", "phsu", "rcpt", "strd", "vita"];
+	var disordersA = ["acab", "anab", "comd", "cgab", "dsyn", "emod", "fndg", "inpo", "mobd", "neop", "patf", "sosy"];
+	var genesProteinsA = ["aapp", "gngm", "mosq", "nusq", "amas"];
+	var physiologyA = ["celf", "clna", "genf", "menp", "moft", "ortf", "orga", "orgf", "phsf"];
+	
+
+	if(val == 0)  
+		{
+		tGrpA = disordersA;
+		}
+	else if(val == 1)
+		{
+		tGrpA = genesProteinsA;
+		}
+	else if(val == 2)
+		{
+		tGrpA = drugsChemA;
+		}
+	else if(val == 3)
+		{
+		tGrpA = anatA;
+		}
+	else if(val == 4)
+		{
+		tGrpA = physiologyA;
+		}
+		
+	  var cuiCount = {}; 
+	  var cName = "";
+	  var cType = "";
+	  var cuiCountLength = 0;
+	  var cCArrLength = 0;  
+	  var maxCount = 0;
+	  var cuiAnchor = "";
+	  
+	  for (var i = 0; i < searchResult.length; i++)
+	{
+		cName = clean(searchResult[i][predColumn("s_cui")], "|||");
+		cType = clean(searchResult[i][predColumn("s_type")], "|||");
+		
+			if(!cuiCount[cName])  
+			{
+			cuiCountLength += 1;  
+			cuiCount[cName] = 1;
+			cCArrLength += 1;
+			}
+			else
+			{
+			cuiCount[cName] += 1;  
+			}
+			if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+			{
+			maxCount = cuiCount[cName];
+			cuiAnchor = cName;
+			}
+			
+		cName = clean(searchResult[i][predColumn("o_cui")], "|||");
+		cType = clean(searchResult[i][predColumn("o_type")], "|||");
+		
+			if(!cuiCount[cName])
+			{
+			cuiCountLength += 1;  
+			cuiCount[cName] = 1;
+			cCArrLength += 1;
+			}
+			else
+			{
+			cuiCount[cName] += 1;
+			}
+			
+			if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0)  && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+			{
+			maxCount = cuiCount[cName];
+			cuiAnchor = cName;
+			}
+	  
+	}
+	
+			if(altAnchorCui != "") {
+			cuiAnchor = altAnchorCui;
+			}
+	
+	
+	
+	if(cCArrLength > 4){
+				delete cuiCount[cuiAnchor];
+				var maxC2 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC2) {
+					maxC2 = cuiCount[keyT];
+					altAnchorCui1 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui1];
+				var maxC3 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC3) {
+					maxC3 = cuiCount[keyT];
+					altAnchorCui2 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui2];
+				var maxC4 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC4) {
+					maxC4 = cuiCount[keyT];
+					altAnchorCui3 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui3];
+				var maxC5 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC5) {
+					maxC5 = cuiCount[keyT];
+					altAnchorCui4 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui4];
+				var maxC6 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC6) {
+					maxC6 = cuiCount[keyT];
+					altAnchorCui5 = keyT;
+					}
+				}
+
+		}
+		
+						else{
+					
+					$("#linkItem1").html("insufficient data");
+					$("#linkItem2").html("");
+					$("#linkItem3").html("");
+					$("#linkItem4").html("");
+					$("#linkItem5").html("");
+					altAnchorCui1 = "";
+					altAnchorCui2 = "";					
+					altAnchorCui3 = "";
+					altAnchorCui4 = "";
+					altAnchorCui5 = "";
+					callIt = "";
+				
+				}
+
+		
+		var onePath = []; 
+		var tName = "";
+		var tNameT = "";
+		var tType = "";
+		var tTypeT = "";
+		
+		for (var i = 0; i < searchResult.length; i++)
+	{
+		tName = clean(searchResult[i][predColumn("s_cui")], "|||");   
+		tNameT = clean(searchResult[i][predColumn("o_cui")], "|||");
+		tType = clean(searchResult[i][predColumn("s_type")], "|||");
+		tTypeT = clean(searchResult[i][predColumn("o_type")], "|||");
+		
+		if((tName == cuiAnchor) && (tNameT != cuiAnchor) && ($.inArray( tTypeT, tGrpA) > -1))  
+		{
+		  onePath.push(tNameT);
+
+		}
+		
+		if((tNameT == cuiAnchor) && (tName != cuiAnchor) && ($.inArray( tType, tGrpA) > -1))
+		{
+		  onePath.push(tName);
+		}
+		
+		
+		
+	}
+	
+	
+	
+	if(onePath.length < 2)  
+	{
+	
+		
+			alert("Not enough data - make another selection");
+			
+		
+	}
+
+	
+	var testV = [];
+	var randomCUIs = [];
+	
+	var onePathSortA = [];
+	var onePathSort = [];
+	
+		var keys = [];
+		for(var key in cuiCount){
+		keys.push(key);
+		}
+		
+		sKeys = keys.sort(function(a,b){return cuiCount[a]-cuiCount[b]});
+		
+		
+		for(var i = 0; i < sKeys.length; i++)
+		{
+		
+			for(var j = 0; j < onePath.length; j++)
+			{
+			
+				if(sKeys[i] == onePath[j])
+				{
+				  onePathSortA.push(onePath[j]);  
+				}
+			
+			}
+		
+		}
+		
+			var tempU = [];
+		for(var q = 0; q < onePathSortA.length; q++)
+		{
+		
+				if(tempU.indexOf(onePathSortA[q]) < 0)
+				{
+				onePathSort.push(onePathSortA[q]);				
+				}
+				
+				tempU.push(onePathSortA[q]);	
+		
+		}
+		
+
+		
+		var cA = Math.round(onePathSort.length * .35);
+		
+		document.getElementById("resultPanel").innerHTML = "Connected nodes: "  + cA;
+		
+	
+					var j = 0;
+					while(j < 7)
+					{  
+						var c1 = Math.floor((Math.random()* cA)) 
+						if(!testV.indexOf(c1) > -1) 
+						{
+						testV.push(c1);
+							for(var y = 0; y < onePathSort.length; y++)
+							{
+								if((y == c1) && (onePathSort[y] != cuiAnchor))
+								{
+								randomCUIs.push(onePathSort[y]);  
+								}
+								
+							
+							}
+						j++;
+						}
+						else
+						{
+						continue;
+						}
+					
+					}
+					
+
+				
+	var terms = "" + document.getElementById("searchTerm").value;  
+	networks.push({id:currentNetwork, searchTerms:terms,   
+		fileName:"", nodes:[], links:[]}); 
+	
+	var nodeIdCounter = 0;
+	var tSubjA = [];
+	var tObjA = [];
+	var tPa = [];
+	var tArgs = [];
+	var tArg = [];
+	var tSubjB = [];
+	var tObjB = [];
+	var tPb = [];
+	var tPattern = [];
+	var tPatternAgain = [];
+	
+	
+	for (var i = 0; i < searchResult.length; i++)  
+	{
+
+		
+		
+			
+				var tSCui = clean(searchResult[i][predColumn("s_cui")], "|||")
+				var tOCui = clean(searchResult[i][predColumn("o_cui")], "|||")
+				var tPredC = clean(searchResult[i][predColumn("predicate")], "|||");
+				
+								//THESE NEXT TWO VARIABLES ONLY FOR USE IN BUILDING CONTEXT MENU
+				var cMSName = clean(searchResult[i][predColumn("s_name")], "|||");
+				var cMOName = clean(searchResult[i][predColumn("o_name")], "|||");
+				
+				if(cCArrLength > 4) {
+				
+					if(tSCui == altAnchorCui1) {			
+					$("#linkItem1").html(cMSName);
+					}
+					if(tOCui == altAnchorCui1) { 
+					$("#linkItem1").html(cMOName);
+					}
+					if(tSCui == altAnchorCui2) { 
+					$("#linkItem2").html(cMSName);
+					}
+					if(tOCui == altAnchorCui2) {
+					$("#linkItem2").html(cMOName);
+					}
+					if(tSCui == altAnchorCui3) { 
+					$("#linkItem3").html(cMSName);
+					}
+					if(tOCui == altAnchorCui3) { 
+					$("#linkItem3").html(cMOName);
+					}
+					if(tSCui == altAnchorCui4) { 
+					$("#linkItem4").html(cMSName);
+					}
+					if(tOCui == altAnchorCui4) { 
+					$("#linkItem4").html(cMOName);
+					}
+					if(tSCui == altAnchorCui5) { 
+					$("#linkItem5").html(cMSName);
+					}
+					if(tOCui == altAnchorCui5) { 
+					$("#linkItem5").html(cMOName);
+					}
+					
+						callIt ="oncsg";
+				}
+				
+
+				
+				var tAllC1 = tSCui + tPredC + tOCui;
+				var tAllC2 = tOCui + tPredC + tSCui;
+				
+				
+			
+
+			if(((tSCui == cuiAnchor) && ($.inArray( tOCui, randomCUIs) > -1)) || ((tOCui == cuiAnchor) && ($.inArray( tSCui, randomCUIs) > -1)) ) 
+				{ 
+					
+					tArg.push(tSCui);
+					tArg.push(tOCui);
+					tPb.push(tPredC);
+					
+					
+				  
+				  if(((!$.inArray( tSCui, tSubjA) > -1 ) && (!$.inArray( tOCui, tObjA) > -1 ) && (!$.inArray( tPredC, tPa) > -1 )))  
+					{
+						tPattern.push(tAllC1);  
+						tPatternAgain.push(tAllC2);
+						tSubjA.push(tSCui);
+						tObjA.push(tOCui);
+						tPa.push(tPredC);
+						
+						var node1 = { id:" ", anchor:false, sColor:"black", visible:true };  
+						node1.network = currentNetwork; 
+						node1.id = "" + currentNetwork + "." + nodeIdCounter;  
+						node1.symbol = clean(searchResult[i][predColumn("s_cui")], "|||"); 
+						node1.name = clean(searchResult[i][predColumn("s_name")], "|||");   
+						node1.semtype = clean(searchResult[i][predColumn("s_type")], "|||");  
+						node1.novel = searchResult[i][predColumn("s_novel")];  
+						node1.x = 200;  
+						node1.y = 200;
+						
+						if(findNode(node1.symbol, currentNetwork) == -1){  		
+							networks[currentNetwork].nodes.push(node1);  
+							nodeIdCounter++;
+
+						}
+				
+					  
+					
+				
+						var node2 = { id:" ", anchor:false, sColor:"black", visible:true }; 
+
+						node2.network = currentNetwork;
+						node2.id = "" + currentNetwork + "." + nodeIdCounter + ".5";  
+						node2.symbol = clean(searchResult[i][predColumn("o_cui")], "|||"); 
+						node2.name =  clean(searchResult[i][predColumn("o_name")], "|||");
+						node2.semtype = clean(searchResult[i][predColumn("o_type")], "|||");
+						node2.novel = searchResult[i][predColumn("o_novel")];
+						node2.x = 200;
+						node2.y = 200;
+
+						if (findNode(node2.symbol, currentNetwork) == -1){  
+							networks[currentNetwork].nodes.push(node2); 
+							nodeIdCounter++;
+						}
+					}
+				}
+		
+	}
+	
+	
+	var sTestA = [];
+	var oTestA = [];
+
+			
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+				
+				var subj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var obj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var pred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tSubj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var tObj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAll1 = tSubj + tPred +  tObj;
+				var tAll2 = tObj + tPred + tSubj;
+				var sTest = tSubj + tObj;
+				var oTest = tObj + tSubj;
+				var sT = subj + obj;
+				var oT = obj + subj;
+				
+		if(((subj == cuiAnchor) && ($.inArray( obj, randomCUIs) > -1 )  ) || ((obj == cuiAnchor) && ($.inArray( subj, randomCUIs) > -1 ) ))
+		{
+			
+			if((!$.inArray( sTest, tArgs) > -1 ) && (!$.inArray( oTest, tArgs) > -1 )) 
+			{
+				
+				tArgs.push(sTest);
+				tArgs.push(oTest);
+				tPb.push(tPred);
+				tArg.push(tSubj);
+				tArg.push(tObj);
+				
+				var nodeIdCounter = 0;
+
+				
+				if(($.inArray(tAll1, tPattern) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) )) 
+					{
+
+							sTestA.push(sTest);
+							tPattern.push(sT);
+							
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };  
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];                                                         
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];   
+							
+							var linkFound = findLink(link1, currentNetwork); 
+							
+
+							if (linkFound != -1) { 
+								
+								 var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork); 
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]);
+								}
+							}
+
+							else { networks[currentNetwork].links.push(link1); } 
+
+							
+					}
+					
+
+				else if(($.inArray(tAll2, tPatternAgain) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+						{
+						
+						oTestA.push(oTest);
+						tPattern.push(oT);
+						
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };  
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"), 
+															currentNetwork)];                                                           
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) {
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+
+							else { networks[currentNetwork].links.push(link1); }  
+							
+						}
+						
+						else { continue; }
+					
+			}		
+		}
+	} 
+	
+
+	
+	if (nodes.length == 7) {
+		if (nodes[1].symbol == "B") {
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+
+	viewNetwork(currentNetwork,1);	
+	
+	start();
+	
+	
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1); 
+	}
+
+	svg1.style("opacity", function(){return 1e-6;})
+		.transition()
+		.duration(2000)
+		.style("opacity", function(){return 1;});
+
+	document.getElementById("openNet").value = "Open";
+	document.getElementById("openNet").disabled = "disabled";
+	document.getElementById("openNet").title="Search required";
+	searchResult.splice(0,searchResult.length);
+	
+	fillNetworkSelector();
+    fillSchemaSelector();
+	
+	
+
+	function findNode(symb, net) {  
+		for (var i = 0; i < networks[net].nodes.length; i++) {
+
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {  
+				return i;																		   
+			}
+		}
+
+		return -1;
+	}
+	
+	
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	function findPredicate(predicate1, linkIndex, net) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+		
+	
+		function clean(text, stop){
+		var found = text.indexOf(stop);
+		if (found != -1) return text.substr(0,found); else return text;
+	}
+		
+	
+
+}
+
+function openNetClickPredGroups(value)
+{
+	if (searchResult.length < 2)
+  {
+	alert("Please run a search query");
+	var newValue = -1; 
+	document.getElementById("byPredicateGrp").value = newValue;	
+	return;
+  }
+		
+	if (testNum == 25){
+  
+			// alert("yay!");  // this decision point works
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();
+			
+		}
+
+	currentNetwork = networks.length;
+
+	searchResult.randomize();
+	
+	var tGrpA = [];
+
+
+  
+    val = value;
+   
+    var newValue = -1; 
+	document.getElementById("byPredicateGrp").value = newValue;	
+	
+	var Physical = ["PART_OF", "LOCATION_OF"];
+	var Interaction = ["INHIBITS", "STIMULATES", "INTERACTS_WITH"];
+	var Therapy = ["TREATS", "PREVENTS", "compared_with", "USES"];
+	var Causation = ["ASSOCIATED_WITH", "CAUSES", "PREDISPOSES"];
+	var Diagnosis = ["DIAGNOSES", "MEASURES"];
+	var Affects = ["AFFECTS", "AUGMENTS", "DISRUPTS"];
+	var Comorbidities = ["COEXISTS_WITH", "ASSOCIATED_WITH"];		
+
+	if(val == 5) 
+		{
+		tGrpA = Physical;
+		}
+	else if(val == 6)
+		{
+		tGrpA = Interaction;
+		}
+	else if(val == 7)
+		{
+		tGrpA = Therapy;
+		}
+	else if(val == 8)
+		{
+		tGrpA = Causation;
+		}
+	else if(val == 9)
+		{
+		tGrpA = Diagnosis;
+		}
+	else if(val == 10)
+		{
+		tGrpA = Affects;
+		}
+	else if(val == 11)
+		{
+		tGrpA = Comorbidities;
+		}
+
+		
+	  var cuiCount = {}; 
+	  var cName = "";
+	  var cType = "";
+	  var cuiCountLength = 0;
+	  var cCArrLength = 0;  
+	  var maxCount = 0;
+	  var cuiAnchor = "";
+	  for (var i = 0; i < searchResult.length; i++){
+		cName = clean(searchResult[i][predColumn("s_cui")], "|||");
+		cType = clean(searchResult[i][predColumn("s_type")], "|||");
+		
+			if(!cuiCount[cName]) 
+			{
+			cuiCountLength += 1;  
+			cuiCount[cName] = 1;
+			cCArrLength += 1;
+			}
+			else
+			{
+			cuiCount[cName] += 1; 
+			}
+			if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0) && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))
+			{
+			maxCount = cuiCount[cName];
+			cuiAnchor = cName;
+			}
+			
+		cName = clean(searchResult[i][predColumn("o_cui")], "|||");
+		cType = clean(searchResult[i][predColumn("o_type")], "|||");
+		
+			if(!cuiCount[cName])
+			{
+			cuiCountLength += 1;  
+			cuiCount[cName] = 1;
+			cCArrLength += 1;
+			}
+			else
+			{
+			cuiCount[cName] += 1;
+			}
+			
+			if((cuiCount[cName] > maxCount) && (genGroup.indexOf(cType) < 0) && (cName != "C0008059") && (cName !="C0001675") && (cName !="C0030705"))   // C0008059 = child  C0001675 = adult
+			{
+			maxCount = cuiCount[cName];
+			cuiAnchor = cName;
+			}
+	  
+		}
+		
+		if(altAnchorCui != "") {
+			cuiAnchor = altAnchorCui;
+			}
+	
+	
+	
+	if(cCArrLength > 4){
+				delete cuiCount[cuiAnchor];
+				var maxC2 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC2) {
+					maxC2 = cuiCount[keyT];
+					altAnchorCui1 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui1];
+				var maxC3 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC3) {
+					maxC3 = cuiCount[keyT];
+					altAnchorCui2 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui2];
+				var maxC4 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC4) {
+					maxC4 = cuiCount[keyT];
+					altAnchorCui3 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui3];
+				var maxC5 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC5) {
+					maxC5 = cuiCount[keyT];
+					altAnchorCui4 = keyT;
+					}
+				}
+				delete cuiCount[altAnchorCui4];
+				var maxC6 = 0;
+				for(var keyT in cuiCount) {
+					if(cuiCount[keyT] > maxC6) {
+					maxC6 = cuiCount[keyT];
+					altAnchorCui5 = keyT;
+					}
+				}
+
+		}
+		
+						else{
+					
+					$("#linkItem1").html("insufficient data");
+					$("#linkItem2").html("");
+					$("#linkItem3").html("");
+					$("#linkItem4").html("");
+					$("#linkItem5").html("");
+					altAnchorCui1 = "";
+					altAnchorCui2 = "";					
+					altAnchorCui3 = "";
+					altAnchorCui4 = "";
+					altAnchorCui5 = "";
+					callIt = "";
+				
+				}
+		
+		var onePath = []; 
+		onePath.push(cuiAnchor);
+		var tName = "";
+		var tNameT = "";
+		var tType = "";
+		var tTypeT = "";
+		
+		for (var i = 0; i < searchResult.length; i++){
+		tName = clean(searchResult[i][predColumn("s_cui")], "|||");   
+		tNameT = clean(searchResult[i][predColumn("o_cui")], "|||");
+		tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+		
+		
+		if((tName == cuiAnchor) && (tNameT != cuiAnchor) && ($.inArray( tPred, tGrpA) > -1))  
+		{
+		  onePath.push(tNameT);
+		}
+		
+		if((tNameT == cuiAnchor) && (tName != cuiAnchor) && ($.inArray( tPred, tGrpA) > -1))
+		{
+		  onePath.push(tName);
+		}
+	}
+	
+	if(onePath.length < 2)  
+	{
+		alert("Not enough data - make another selection");		
+	}
+	
+
+	
+	var testV = [];
+	var randomCUIs = [];
+	
+	var onePathSortA = [];
+	var onePathSort = [];
+	
+		var keys = [];
+		for(var key in cuiCount){
+		keys.push(key);
+		}
+		
+		sKeys = keys.sort(function(a,b){return cuiCount[a]-cuiCount[b]});
+		
+		
+		for(var i = 0; i < sKeys.length; i++)
+		{
+		
+			for(var j = 0; j < onePath.length; j++)
+			{
+			
+				if(sKeys[i] == onePath[j])
+				{
+				  onePathSortA.push(onePath[j]);  
+				}
+			
+			}
+		
+		}
+		
+		
+		var tempU = [];
+		for(var q = 0; q < onePathSortA.length; q++)
+		{
+		
+				if(tempU.indexOf(onePathSortA[q]) < 0)
+				{
+				onePathSort.push(onePathSortA[q]);				
+				}
+				
+				tempU.push(onePathSortA[q]);	
+		
+		}
+		
+		
+			var cA = Math.round(onePathSort.length * .35);
+			
+			document.getElementById("resultPanel").innerHTML = "Connected nodes: "  + cA;
+
+				
+				var j = 0;
+					while(j < 7)
+					{  
+						var c1 = Math.floor((Math.random()* cA)) 
+						if(!testV.indexOf(c1) > -1)  
+						{
+						testV.push(c1);
+							for(var y = 0; y < onePathSort.length; y++)
+							{
+								if((y == c1) && (onePathSort[y] != cuiAnchor))
+								{
+								randomCUIs.push(onePathSort[y]);  
+								}
+								
+							
+							}
+						j++;
+						}
+						else
+						{
+						continue;
+						}
+					
+					}
+
+				
+	var terms = "" + document.getElementById("searchTerm").value;  
+	networks.push({id:currentNetwork, searchTerms:terms,   
+		fileName:"", nodes:[], links:[]}); 
+	
+	var nodeIdCounter = 0;
+	var tSubjA = [];
+	var tObjA = [];
+	var tPa = [];
+	var tArgs = [];
+	var tArg = [];
+	var tSubjB = [];
+	var tObjB = [];
+	var tPb = [];
+	var tPattern = [];
+	var tPatternAgain = [];
+
+	
+	for (var i = 0; i < searchResult.length; i++)  
+	{
+
+		
+		
+			
+				var tSCui = clean(searchResult[i][predColumn("s_cui")], "|||")
+				var tOCui = clean(searchResult[i][predColumn("o_cui")], "|||")
+				var tPredC = clean(searchResult[i][predColumn("predicate")], "|||");
+				
+												//THESE NEXT TWO VARIABLES ONLY FOR USE IN BUILDING CONTEXT MENU
+				var cMSName = clean(searchResult[i][predColumn("s_name")], "|||");
+				var cMOName = clean(searchResult[i][predColumn("o_name")], "|||");
+				
+				if(cCArrLength > 4) {
+				
+					if(tSCui == altAnchorCui1) {			
+					$("#linkItem1").html(cMSName);
+					}
+					if(tOCui == altAnchorCui1) { 
+					$("#linkItem1").html(cMOName);
+					}
+					if(tSCui == altAnchorCui2) { 
+					$("#linkItem2").html(cMSName);
+					}
+					if(tOCui == altAnchorCui2) {
+					$("#linkItem2").html(cMOName);
+					}
+					if(tSCui == altAnchorCui3) { 
+					$("#linkItem3").html(cMSName);
+					}
+					if(tOCui == altAnchorCui3) { 
+					$("#linkItem3").html(cMOName);
+					}
+					if(tSCui == altAnchorCui4) { 
+					$("#linkItem4").html(cMSName);
+					}
+					if(tOCui == altAnchorCui4) { 
+					$("#linkItem4").html(cMOName);
+					}
+					if(tSCui == altAnchorCui5) { 
+					$("#linkItem5").html(cMSName);
+					}
+					if(tOCui == altAnchorCui5) { 
+					$("#linkItem5").html(cMOName);
+					}
+					
+						callIt ="oncpg";
+				}
+				
+				
+				var tAllC1 = tSCui + tPredC + tOCui;
+				var tAllC2 = tOCui + tPredC + tSCui;
+				
+			if(((tSCui == cuiAnchor) && ($.inArray( tOCui, randomCUIs) > -1)) || ((tOCui == cuiAnchor) && ($.inArray( tSCui, randomCUIs) > -1)) )
+				{ 
+					
+					tArg.push(tSCui);
+					tArg.push(tOCui);
+					tPb.push(tPredC);
+					
+					
+				  
+				  if(((!$.inArray( tSCui, tSubjA) > -1 ) && (!$.inArray( tOCui, tObjA) > -1 ) && (!$.inArray( tPredC, tPa) > -1 )))  
+					{
+						tPattern.push(tAllC1);  
+						tPatternAgain.push(tAllC2);
+						tSubjA.push(tSCui);
+						tObjA.push(tOCui);
+						tPa.push(tPredC);
+						
+						var node1 = { id:" ", anchor:false, sColor:"black", visible:true };  
+						node1.network = currentNetwork; 
+						node1.id = "" + currentNetwork + "." + nodeIdCounter; 
+						node1.symbol = clean(searchResult[i][predColumn("s_cui")], "|||"); 
+						node1.name = clean(searchResult[i][predColumn("s_name")], "|||"); 
+						node1.semtype = clean(searchResult[i][predColumn("s_type")], "|||"); 
+						node1.novel = searchResult[i][predColumn("s_novel")];  
+						node1.x = 200; 
+						node1.y = 200;
+
+						if(findNode(node1.symbol, currentNetwork) == -1){  
+							networks[currentNetwork].nodes.push(node1);  
+							nodeIdCounter++;
+
+						}
+				
+					  
+					
+				
+						var node2 = { id:" ", anchor:false, sColor:"black", visible:true };  
+
+						node2.network = currentNetwork;
+						node2.id = "" + currentNetwork + "." + nodeIdCounter + ".5";  
+						node2.symbol = clean(searchResult[i][predColumn("o_cui")], "|||");  
+						node2.name =  clean(searchResult[i][predColumn("o_name")], "|||");
+						node2.semtype = clean(searchResult[i][predColumn("o_type")], "|||");
+						node2.novel = searchResult[i][predColumn("o_novel")];
+						node2.x = 200;
+						node2.y = 200;
+
+						if (findNode(node2.symbol, currentNetwork) == -1){ 
+							networks[currentNetwork].nodes.push(node2);  
+							nodeIdCounter++;
+						}
+					}
+				}
+		
+	}
+	
+	
+	var sTestA = [];
+	var oTestA = [];
+
+			
+	for (var i = 0; i < searchResult.length; i++)   
+	{
+									
+				var subj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var obj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var pred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tSubj = clean(searchResult[i][predColumn("s_cui")], "|||");
+				var tObj = clean(searchResult[i][predColumn("o_cui")], "|||");
+				var tPred = clean(searchResult[i][predColumn("predicate")], "|||");
+				var tAll1 = tSubj + tPred +  tObj;
+				var tAll2 = tObj + tPred + tSubj;
+				var sTest = tSubj + tObj;
+				var oTest = tObj + tSubj;
+				var sT = subj + obj;
+				var oT = obj + subj;
+				
+		if(((subj == cuiAnchor) && ($.inArray( obj, randomCUIs) > -1 )  && ($.inArray( tPred, tGrpA) > -1 )  ) || ((obj == cuiAnchor) && ($.inArray( subj, randomCUIs) > -1 )   && ($.inArray( tPred, tGrpA) > -1 ) ))
+		{
+			
+			if((!$.inArray( sTest, tArgs) > -1 ) && (!$.inArray( oTest, tArgs) > -1 ))  
+			{
+				
+				tArgs.push(sTest);
+				tArgs.push(oTest);
+				tPb.push(tPred);
+				tArg.push(tSubj);
+				tArg.push(tObj);
+				
+				var nodeIdCounter = 0;
+
+				if(($.inArray(tAll1, tPattern) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) )) 
+					{
+						
+							sTestA.push(sTest);
+							tPattern.push(sT);
+							
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };  							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];                                                         
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+								
+								 var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork);  
+
+								if (predicateFound != -1 ) { 
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]);  // predicate is the predicate's index in the network
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+							else { networks[currentNetwork].links.push(link1); }  
+
+							
+					}
+					
+						 
+				else if(($.inArray(tAll2, tPatternAgain) > -1 ) && ((sTestA.indexOf(sTest) < 0 ) && (oTestA.indexOf(oTest) < 0 ) ))
+
+						{
+						
+						oTestA.push(oTest);
+						tPattern.push(oT);
+						
+						var link1 = { source:" ", target:" ", sColor:"black", 
+							predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };   
+							
+							
+							link1.source = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("o_cui")], "|||"),
+															currentNetwork)];                                                           
+							link1.target = networks[currentNetwork].nodes[findNode(clean(searchResult[i][predColumn("s_cui")], "|||"), 
+															currentNetwork)];
+							link1.predicate[0].label = searchResult[i][predColumn("predicate")];   
+
+							link1.predicate[0].sentence[0].PMID = searchResult[i][predColumn("PMID")];  
+							link1.predicate[0].sentence[0].SID = searchResult[i][predColumn("SID")];    
+							
+							var linkFound = findLink(link1, currentNetwork); 
+
+							if (linkFound != -1) { 
+
+								var predicateFound = findPredicate(link1.predicate[0], linkFound, currentNetwork); 
+
+								if (predicateFound != -1 ) {
+
+									networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[0]); 
+								}
+
+								else { 
+
+									networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]); 
+								}
+							}
+
+
+							else { networks[currentNetwork].links.push(link1); }  
+							
+						}
+						
+						else { continue; }
+					
+			}		
+		}
+	} 
+	
+	if (nodes.length == 7) {
+		if (nodes[1].symbol == "B") {
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+
+	viewNetwork(currentNetwork,1);	
+	start();
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1); 
+	}
+
+	svg1.style("opacity", function(){return 1e-6;})
+		.transition()
+		.duration(2000)
+		.style("opacity", function(){return 1;});
+
+	document.getElementById("openNet").value = "Open";
+	document.getElementById("openNet").disabled = "disabled";
+	document.getElementById("openNet").title="Search required";
+	searchResult.splice(0,searchResult.length);
+	
+	fillNetworkSelector();
+    fillSchemaSelector();
+	
+	
+
+	function findNode(symb, net) {  
+		for (var i = 0; i < networks[net].nodes.length; i++) {
+
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {  
+				return i;																		   
+			}
+		}
+
+		return -1;
+	}
+	
+	
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+	
+	function findPredicate(predicate1, linkIndex, net) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+		
+	
+		function clean(text, stop){
+		var found = text.indexOf(stop);
+		if (found != -1) return text.substr(0,found); else return text;
+	}
+		
+		
+
+}
+
+
+Array.prototype.randomize = function()
+{
+	var i = this.length, j, temp;
+	while ( --i )
+	{
+		j = Math.floor( Math.random() * (i - 1) );
+		temp = this[i];
+		this[i] = this[j];
+		this[j] = temp;
+	}
+}
+
+
+
+function viewNetwork(net,SVG) {
+
+	var Nodes = nodes,
+	    Links = links;
+
+	for (var i = 0; i < networks[net].nodes.length; i++) {
+
+		Nodes.push(networks[net].nodes[i]);
+	}
+
+	for (var j = 0; j < networks[net].links.length; j++) {
+
+		Links.push(networks[net].links[j]);
+	}
+	
+	start();
+}
+
+
+function loadGraph(file)
+{
+
+	  if (testNum == 25){
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length);
+			labels.splice(0, labels.length);
+			start();
+			
+		}
+	
+	var AnchorNode;
+
+	var xmlDoc = jQuery.parseXML(file);
+
+ 	var graphType;
+ 	var graphAtts = xmlDoc.getElementsByTagName("graph")[0].getElementsByTagName("att");
+ 	for (var i = 0; i < graphAtts.length; i++){
+ 		if (graphAtts[0].getAttributeNode("name").nodeValue == "type") {
+ 			graphType = graphAtts[0].getAttributeNode("value").nodeValue;
+ 		}
+ 		
+ 	}
+
+ 	if (graphType != undefined && graphType == "SemanticMedline") { 
+
+ 		currentNetwork = networks.length;
+
+		var file = document.getElementById("files").value.substring(document.getElementById("files").value.lastIndexOf('\\')+1);
+		networks.push({id:currentNetwork, searchTerms:"", fileName:file, deleted:false, nodes:[], links:[]});
+
+		// get nodes
+		var xmlNodes = xmlDoc.getElementsByTagName("node");
+		for (var i = 0; i < xmlNodes.length; i++) {
+
+			var node1 = { id:" ", anchor:false, sColor:"black", novel:"", visible:true };
+
+			node1.symbol = xmlNodes[i].attributes.getNamedItem("id").nodeValue;
+			node1.name = xmlNodes[i].attributes.getNamedItem("label").nodeValue;
+	
+			var atts = xmlDoc.getElementsByTagName("node")[i].getElementsByTagName("att");
+			for (var j = 0; j < atts.length; j++){
+				var variable = atts[j].getAttributeNode("name").nodeValue;
+				node1[variable] = atts[j].getAttributeNode("value").nodeValue; 
+			}
+			
+			node1.x = Number(node1.x);
+			node1.y = Number(node1.y);
+			node1.visible = true;
+			node1.fixed = false;
+			node1.novel = true;
+			node1.anchor = false;
+
+			node1.network = currentNetwork;
+			node1.id = "" + currentNetwork + "." + i;
+
+			networks[currentNetwork].nodes.push(node1);
+			
+		} 
+
+		var xmlEdges = xmlDoc.getElementsByTagName("edge");
+		for (var i = 0; i < xmlEdges.length; i++) {
+			
+			var currentEdge = xmlEdges[i];
+
+			var link1 = { source:" ", target:" ", sColor:"black", 
+					predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };
+			link1.source = networks[currentNetwork].nodes[findNode(currentEdge.attributes.getNamedItem("source").nodeValue, currentNetwork)];
+			link1.target = networks[currentNetwork].nodes[findNode(currentEdge.attributes.getNamedItem("target").nodeValue, currentNetwork)];
+			link1.path = currentEdge.attributes.getNamedItem("path").nodeValue;
+
+			var predicates = currentEdge.childNodes;
+			for (var j = 0; j < predicates.length; j++) {
+
+				var pred = {label:" ", visible:true, sentence:[] };
+				
+				pred.label = predicates[j].attributes.getNamedItem("label").nodeValue;
+				link1.predicate[j] = pred;
+				
+				var sentences = predicates[j].childNodes;
+				for (var k = 0; k < sentences.length; k++){
+					
+					var sentence1 = {PMID:"", SID:"", sNumber:"", abti:"", text:""}; 
+					
+					sentence1.PMID = sentences[k].attributes.getNamedItem("PMID").nodeValue;
+					sentence1.SID = sentences[k].attributes.getNamedItem("SID").nodeValue;
+					sentence1.abti = sentences[k].attributes.getNamedItem("abti").nodeValue;
+					sentence1.sNumber = sentences[k].attributes.getNamedItem("sNumber").nodeValue;
+					sentence1.text = sentences[k].attributes.getNamedItem("text").nodeValue;
+
+					link1.predicate[j].sentence[k] = sentence1;
+				}
+			}
+			
+			var linkFound = findLink(link1, currentNetwork);
+			if (linkFound != -1) {
+
+				var predicateFound = findPredicate(link1.predicate[0], currentNetwork, linkFound);
+
+				if (predicateFound != -1 ) { 
+
+					for (var k = 0; k < link1.predicate[0].sentence.length; k++) {
+
+						networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[k]);
+					}
+				}
+
+				else { 
+
+					networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]);
+				}
+			}
+
+			else { 
+
+				networks[currentNetwork].links.push(link1);
+			} 
+			
+		} 
+
+ 	} 
+ 	
+ 	else if (xmlDoc.getElementsByTagName("seed").length == 1) { 
+ 		
+		var Anchor = xmlDoc.getElementsByTagName("seed")[0].attributes.getNamedItem("value").nodeValue;
+		
+
+		currentNetwork = networks.length;
+
+		var file = document.getElementById("files").value.substring(document.getElementById("files").value.lastIndexOf('\\')+1);
+
+		networks.push({id:currentNetwork, searchTerms:"", fileName:file, deleted:false, nodes:[], links:[]});
+
+		for (var i = 0, n; n = xmlDoc.getElementsByTagName("node")[i]; i++) {
+
+			var node1 = { id:" ", anchor:false, sColor:"black", novel:"", visible:true };
+
+			node1.network = currentNetwork;
+			node1.id = "" + currentNetwork + "." + i;
+			node1.symbol = xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("id").nodeValue;
+			node1.name = xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("name").nodeValue;
+			node1.semtype = xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("semtype").nodeValue;
+			node1.visible = true;
+			node1.x = Number(xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("x").nodeValue);
+			node1.y = Number(xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("y").nodeValue);
+			node1.novel = true;
+
+
+			if(node1.name == Anchor) { 
+				node1.anchor = true;
+				AnchorNode = node1;
+			}
+
+			networks[currentNetwork].nodes.push(node1);
+
+		} 
+
+		for (var j = 0, m; m = xmlDoc.getElementsByTagName("edge")[j]; j++) {
+
+			var link1 = { source:" ", target:" ", sColor:"black", 
+					predicate:[{label:" ", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };
+	
+			link1.source = networks[currentNetwork].nodes[findNode(xmlDoc.getElementsByTagName("edge")[j].attributes.getNamedItem("source").nodeValue, currentNetwork)];
+			link1.target = networks[currentNetwork].nodes[findNode(xmlDoc.getElementsByTagName("edge")[j].attributes.getNamedItem("target").nodeValue, currentNetwork)];
+			link1.predicate[0].label = xmlDoc.getElementsByTagName("edge")[j].attributes.getNamedItem("label").nodeValue;
+	
+			var children = xmlDoc.getElementsByTagName("edge")[j].childNodes;
+
+			for (var i = 0; i < children.length; i++) {
+
+				var sentence1 = {PMID:"", SID:"", sNumber:"", abti:"", text:""}; 
+
+				var sentence_id = children[i].attributes.getNamedItem("id").nodeValue;
+				sentence1.PMID = sentence_id.substr(0,sentence_id.indexOf("."));
+				sentence1.abti = sentence_id.substr(sentence_id.indexOf(".") + 1, 2);
+				sentence1.sNumber = sentence_id.substr(sentence_id.indexOf(".") + 4, 3);
+				sentence1.text = children[i].attributes.getNamedItem("text").nodeValue;
+
+				link1.predicate[0].sentence[i] = sentence1;
+			}
+
+			var linkFound = findLink(link1, currentNetwork);
+
+			if (linkFound != -1) {
+
+				var predicateFound = findPredicate(link1.predicate[0], currentNetwork, linkFound);
+
+				if (predicateFound != -1 ) { 
+
+					for (var k = 0; k < link1.predicate[0].sentence.length; k++) {
+
+						networks[currentNetwork].links[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[k]);
+					}
+				}
+
+				else { 
+
+					networks[currentNetwork].links[linkFound].predicate.push(link1.predicate[0]);
+				}
+		}
+
+			else { 
+
+				networks[currentNetwork].links.push(link1);
+			} 
+		} 
+
+	} 
+	
+	else { 
+		
+		alert("Unfortunately, this graph is not readable.");
+		return -1;
+	}
+
+	if (nodes.length == 17) {
+		if (nodes[1].symbol == "B") {
+
+			links.splice(0, links.length);	
+			nodes.splice(0, nodes.length); 
+			labels.splice(0, labels.length);
+			start();
+		}
+	}
+	
+	if (nodes.length > 0) {
+		for (var i = 0; i < nodes.length; i++) nodes[i].sColor = "red";
+		moveGraph(1); 
+	}
+	
+	viewNetwork(currentNetwork,1);
+	
+	if (AnchorNode == undefined) {
+		setDegree(nodes);
+		var AnchorNode = setAnchor(currentNetwork);
+	}
+	createAnchorGradient(AnchorNode);
+	
+	start();
+
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1); 
+	}
+
+	svg1.style("opacity", 1e-6)
+		.transition()
+		.duration(function() {return links.length;})
+		.style("opacity", 1);
+
+    
+	function findNode(symb, net) {
+
+		for (var i = 0; i < networks[net].nodes.length; i++) {	
+			
+			if (networks[net].nodes[i].symbol == symb && networks[net].nodes[i].network == net) {
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+
+	function findLink(link1, net) {
+		for (var i = 0; i < networks[net].links.length; i++) {
+			if (networks[net].links[i].source == link1.source && networks[net].links[i].target == link1.target
+				&& networks[net].links[i].source.network == net) {
+
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
+	function findPredicate(predicate1, net, linkIndex) {
+
+		for (var j = 0; j < networks[net].links[linkIndex].predicate.length; j++ ) {
+
+			if (networks[net].links[linkIndex].predicate[j].label == predicate1.label) {
+
+				return j;
+			}
+		}
+
+
+		return -1;
+	}
+
+}
+
+function loadGraph2(file){
+
+		
+	var xmlDoc = jQuery.parseXML(file);
+	
+	var file = document.getElementById("files").value.substring(document.getElementById("files").value.lastIndexOf('\\')+1);
+
+	for (var i = 0; i < xmlDoc.getElementsByTagName("node").length; i++) {
+
+		var node1 = { id:" ", oldId: [""], anchor:false, sColor:"black", novel:"", visible:true };
+
+		node1.id = xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("id").nodeValue;
+		node1.name = xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("label").nodeValue;
+		node1.weight = Number(xmlDoc.getElementsByTagName("node")[i].attributes.getNamedItem("weight").nodeValue);
+
+		var atts = xmlDoc.getElementsByTagName("node")[i].getElementsByTagName("att");
+		for (var j = 0; j < atts.length; j++){
+			var variable = atts[j].getAttributeNode("name").nodeValue;
+			node1[variable] = atts[j].getAttributeNode("value").nodeValue; 
+		}
+		
+		node1.x = Number(node1.x);
+		node1.y = Number(node1.y);
+		node1.visible = true;
+		node1.fixed = true;
+		node1.novel = true;
+		node1.anchor = false;
+
+		var nodeCheck = findNode(node1.id, nodes3);
+
+		if (nodeCheck == -1) nodes3.push(node1);
+
+	} 
+
+	var edges = xmlDoc.getElementsByTagName("edge");
+	for (var i = 0; i < edges.length; i++) {
+
+		var link1 = { source:"", target:"", sColor:"black", 
+				predicate:[{label:"", visible:true, sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };
+		var currentEdge = edges[i]; 
+
+		link1.source = nodes3[findNode(currentEdge.attributes.getNamedItem("source").nodeValue, nodes3)];
+		link1.target = nodes3[findNode(currentEdge.attributes.getNamedItem("target").nodeValue, nodes3)];
+		link1.path = currentEdge.attributes.getNamedItem("path").nodeValue;
+
+		var predicates = currentEdge.childNodes;
+
+		for (var j = 0; j < predicates.length; j++) {
+
+			var pred = {label:" ", visible:true, sentence:[] };
+			
+			pred.label = predicates[j].attributes.getNamedItem("label").nodeValue;
+			link1.predicate[j] = pred;
+
+			var sentences = predicates[j].childNodes;
+
+			for (var k = 0; k < sentences.length; k++){
+				
+				var sentence1 = {PMID:"", SID:"", sNumber:"", abti:"", text:""}; 
+				
+				sentence1.PMID = sentences[k].attributes.getNamedItem("PMID").nodeValue;
+				sentence1.SID = sentences[k].attributes.getNamedItem("SID").nodeValue;
+				sentence1.abti = sentences[k].attributes.getNamedItem("abti").nodeValue;
+				sentence1.sNumber = sentences[k].attributes.getNamedItem("sNumber").nodeValue;
+				sentence1.text = sentences[k].attributes.getNamedItem("text").nodeValue;
+
+				link1.predicate[j].sentence[k] = sentence1;
+			}
+		}
+
+		var linkFound = findLink(link1, links3);
+		if (linkFound == -1) { 
+
+			links3.push(link1);
+
+		} else { 
+
+			var predicateFound = findPredicate(link1.predicate[0], linkFound);
+
+			if (predicateFound != -1 ) { // predicate exists so push each sentence
+
+				for (var k = 0; k < link1.predicate[0].sentence.length; k++) {
+
+					links3[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[k]);
+				}
+			}
+
+			else { 
+
+				links3[linkFound].predicate.push(link1.predicate[0]);
+			}
+		}
+
+	} 
+
+	start3();	
+
+}
+
+function moveGraph(from)
+{
+
+	var toNodes = nodes, toLinks = links, fromNodes = nodes2, fromLinks = links2, Labels = labels2;
+
+	if (from == 1) { 
+		toNodes = nodes2, toLinks = links2, fromNodes = nodes, fromLinks = links, Labels = labels; 
+	}
+
+	var selectedNets = [];
+
+	if (from == 1) {
+		for (var i = 0; i < fromNodes.length; i++) {
+
+			if (fromNodes[i].sColor == "red") {
+
+				if(selectedNets.indexOf(fromNodes[i].network) == -1) {
+					selectedNets.push(fromNodes[i].network);
+				}
+
+			}
+		}
+	}
+
+	else {
+		for (var i = 0; i < fromNodes.length; i++) {
+
+			if (Labels[i].sColor == "red") {
+
+				if(selectedNets.indexOf(Labels[i].network) == -1) {
+					selectedNets.push(Labels[i].network);
+				}
+			}
+		}
+
+	}
+
+	
+	if (selectedNets.length == 0) { 
+	
+		var networkList = [];
+		
+		fromNodes.forEach(function (d, i){
+				
+			if (networkList.indexOf(d.network) == -1)
+				networkList.push(d.network);
+			});
+		
+		if (networkList.length == 1) selectedNets[0] = networkList[0];
+
+	}
+
+	for (h=0; h<selectedNets.length; h++) {
+
+		var nStart = findFirstNode(selectedNets[h],from);
+		var nStop  = findLastNode (selectedNets[h],from);
+		var lStart = findFirstLink(selectedNets[h],from);
+		var lStop  = findLastLink (selectedNets[h],from);
+
+		for (var i = nStart; i <= nStop; i++) {
+
+			var node2 = { id:" " };
+
+			node2.network = fromNodes[i].network;
+			node2.id = fromNodes[i].id;
+			node2.symbol = fromNodes[i].symbol;
+			node2.name = fromNodes[i].name;
+			node2.semtype = fromNodes[i].semtype;
+			node2.visible = fromNodes[i].visible;
+			node2.novel = fromNodes[i].novel;
+			node2.sColor = fromNodes[i].sColor;
+			node2.x = fromNodes[i].x;
+			node2.y = fromNodes[i].y + 100*node2.network;
+			node2.anchor = fromNodes[i].anchor;
+
+			toNodes.push(node2);
+
+		} 
+
+		for (var j = lStart; j <= lStop; j++) {
+
+			var link2 = { source:"", target:"", sColor:"black",
+				predicate:[{label:" ", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };
+
+			link2.source = toNodes[findNode(fromLinks[j].source.id, toNodes)];
+			link2.target = toNodes[findNode(fromLinks[j].target.id, toNodes)];
+			link2.predicate = fromLinks[j].predicate;
+	
+			toLinks.push(link2);
+
+	       	}
+
+		fromLinks.splice(lStart, (lStop-lStart)+1);	
+		fromNodes.splice(nStart, (nStop - nStart)+1); 
+
+	}
+
+	start();
+	start3();
+	
+	if (document.getElementById("freezeSVG").value=="Unfreeze") {
+		freezeNetwork(1);
+	}
+	
+	fillNetworkSelector();
+    fillSchemaSelector();
+    setFindAutocomplete();
+	resetPredCheckboxes();
+	resetSemGroupCheckboxes();
+
+}
+
+function findNode(ID,Nodes) {	
+		
+	for (var i = 0; i < Nodes.length; i++) {	
+		if (Nodes[i].id == ID) {return i;}
+	}
+	
+	return -1;
+}
+
+function findLink(link1, Links) {
+
+	for (var i = 0; i < Links.length; i++) {
+		if (Links[i].source == link1.source && Links[i].target == link1.target) {	return i;}
+	}
+
+	return -1;
+}
+
+function findPredicate(predicate1, link1) {
+
+	for (var j = 0; j < link1.predicate.length; j++ ) {
+
+		if (link1.predicate[j].label == predicate1.label) {
+
+			return j;
+		}
+	}
+
+
+	return -1;
+}
+
+
+
+function saveNetwork(SVG) 
+{
+
+	
+	$( "#saveDialog" ).dialog({
+		buttons: [
+			{
+				text: "XML",
+				click: function() {
+					$( this ).dialog( "close" );
+					
+
+					switch (SVG) {
+						
+						case 3: 
+							
+							var xgmml = "<graph schemaLocation='//sk3.nlm.nih.gov/spark/index.html' directed='1' Rootnode=''>";
+							xgmml += "<att name='type' value='WorkSpace'/>";
+					
+							for (var i = 0; i < nodes3.length; i++){
+									xgmml += "<node id='" + nodes3[i].id + "' label=" + '"' + nodes3[i].name + '"' + " weight='" + nodes3[i].weight + "'>";
+									xgmml += "<att name='network' value='" + nodes3[i].network + "'/>";
+									xgmml += "<att name='symbol' value='" + nodes3[i].symbol + "'/>";
+									xgmml += "<att name='semtype' value='" + nodes3[i].semtype + "'/>";
+									xgmml += "<att name='visible' value='" + nodes3[i].visible + "'/>";
+									xgmml += "<att name='novel' value='" + nodes3[i].novel + "'/>";
+									xgmml += "<att name='sColor' value='" + nodes3[i].sColor + "'/>";
+									xgmml += "<att name='anchor' value='" + nodes3[i].anchor + "'/>";
+									xgmml += "<att name='fixed' value='" + nodes3[i].fixed + "'/>";
+									xgmml += "<att name='x' value='" + nodes3[i].x + "'/>";
+									xgmml += "<att name='y' value='" + nodes3[i].y + "'/>";
+								xgmml += "</node>";	
+							}
+					
+							for (var i = 0; i < links3.length; i++){
+								xgmml += "<edge label='" + links3[i].source.id + "-" + links3[i].target.id;
+								xgmml += "' source='" + links3[i].source.id + "' target='" + links3[i].target.id;
+								xgmml += "' path='" + links3[i].path + "'>";
+								for (var j = 0; j < links3[i].predicate.length; j++) {
+									xgmml += "<predicate label='" + links3[i].predicate[j].label + "'>";
+									for (var k = 0; k < links3[i].predicate[j].sentence.length; k++){
+										xgmml += "<sentence PMID='" + links3[i].predicate[j].sentence[k].PMID + "' ";
+										xgmml += "SID='" + links3[i].predicate[j].sentence[k].SID + "' ";
+										xgmml += "sNumber='" + links3[i].predicate[j].sentence[k].sNumber + "' ";
+										xgmml += "abti='" + links3[i].predicate[j].sentence[k].abti + "' ";
+										xgmml += "text='" + links3[i].predicate[j].sentence[k].text + "'/>";
+									}
+									xgmml += "</predicate>";
+								}
+								xgmml += "</edge>";
+							}
+					
+							xgmml += "</graph>";
+					
+							var blob = new Blob([xgmml], {type: "text/xml;"});
+							saveAs(blob, "WorkSpace.xgmml");
+						
+							break;
+							
+						case 1: 
+
+							var selectedNets = [];
+
+							for (var i = 0; i < nodes.length; i++) {
+
+								if (nodes[i].sColor == "red") {
+
+									if(selectedNets.indexOf(nodes[i].network) == -1) {
+										selectedNets.push(nodes[i].network);
+									}
+								}
+							}
+						
+							if (selectedNets.length == 0) { 
+							
+								var networkList = [];
+								
+								nodes.forEach(function (d, i){
+										
+									if (networkList.indexOf(d.network) == -1)
+										networkList.push(d.network);
+									});
+								
+								if (networkList.length == 1) selectedNets[0] = networkList[0];
+
+							}
+						
+							if (selectedNets.length == 0) alert("No networks selected. Select first to save.");
+							for (var i = 0; i < selectedNets.length; i++){
+			
+								var xgmml = "<graph schemaLocation='//sk3.nlm.nih.gov/spark/index.html' directed='1' Rootnode=''>";
+								xgmml += "<att name='type' value='SemanticMedline'/>";
+
+								for (var j = 0; j < nodes.length; j++){
+									
+									if (nodes[j].network == selectedNets[i]){
+										xgmml += "<node id='" + nodes[j].id + "' label=" + '"' + nodes[j].name + '"' + " weight='" + nodes[j].weight + "'>";
+										xgmml += "<att name='network' value='" + nodes[j].network + "'/>";
+										xgmml += "<att name='symbol' value='" + nodes[j].symbol + "'/>";
+										xgmml += "<att name='semtype' value='" + nodes[j].semtype + "'/>";
+										xgmml += "<att name='visible' value='" + nodes[j].visible + "'/>";
+										xgmml += "<att name='novel' value='" + nodes[j].novel + "'/>";
+										xgmml += "<att name='sColor' value='" + nodes[j].sColor + "'/>";
+										xgmml += "<att name='anchor' value='" + nodes[j].anchor + "'/>";
+										xgmml += "<att name='fixed' value='" + nodes[j].fixed + "'/>";
+										xgmml += "<att name='x' value='" + nodes[j].x + "'/>";
+										xgmml += "<att name='y' value='" + nodes[j].y + "'/>";
+										xgmml += "</node>";
+									}
+								}
+							
+								for (var j = 0; j < links.length; j++){
+									if (links[j].source.network == selectedNets[i]){
+										xgmml += "<edge label='" + links[j].source.symbol + "-" + links[j].target.symbol;
+										xgmml += "' source='" + links[j].source.symbol + "' target='" + links[j].target.symbol;
+										xgmml += "' path='" + links[j].path + "'>";
+										for (var k = 0; k < links[j].predicate.length; k++) {
+											xgmml += "<predicate label='" + links[j].predicate[k].label + "'>";
+											for (var l = 0; l < links[j].predicate[k].sentence.length; l++){
+												xgmml += "<sentence PMID='" + links[j].predicate[k].sentence[l].PMID + "' ";
+												xgmml += "SID='" + links[j].predicate[k].sentence[l].SID + "' ";
+												xgmml += "sNumber='" + links[j].predicate[k].sentence[l].sNumber + "' ";
+												xgmml += "abti='" + links[j].predicate[k].sentence[l].abti + "' ";
+												xgmml += "text='" + links[j].predicate[k].sentence[l].text + "'/>";
+											}
+											xgmml += "</predicate>";
+										}
+										xgmml += "</edge>";
+									}
+								}
+					
+								xgmml += "</graph>";
+					
+								var blob = new Blob([xgmml], {type: "text/xml;"});
+								saveAs(blob, "SKD.xgmml");
+								
+							} 
+							
+						break;
+							
+					} 
+
+				} 
+			},
+			{
+				text: "SVG",
+				click: function() {
+					$( this ).dialog( "close" );
+					
+					var tmp;
+					var svg;
+					switch (SVG) {
+						
+						case 1:
+							tmp = document.getElementById("workSpace");
+							svg = tmp.getElementsByTagName("svg")[0];
+							break;
+						case 3:
+							tmp = document.getElementById("chainSpace");
+							svg = tmp.getElementsByTagName("svg")[0];			
+							break;
+					} 
+
+					var svg_xml = (new XMLSerializer).serializeToString(svg);
+					svg_xml = svg_xml.substr( 0, svg_xml.indexOf(">") + 1) + "<title>image.svg</title>" + svg_xml.substr(svg_xml.indexOf(">") + 1, svg_xml.length);
+					var blob = new Blob([svg_xml], {
+					    type: "image/svg;",
+					});
+					saveAs(blob, "SVG.svg");
+				}
+			}
+			
+			
+		]
+		});
+
+	$( "#saveDialog" ).dialog( "open" );
+	
+}
+
+
+
+
+
+function deleteSelectedNetwork(SVG) {
+	
+	var Nodes = nodes, Links = links, Labels = labels, currentSVG = svg1;
+
+	if (SVG == 2) { 
+		Nodes = nodes2, Links = links2, Labels = labels2, currentSVG = svg2; 
+	}
+
+
+	var selectedNets = [];
+
+	if (SVG == 1) {
+		for (var i = 0; i < Nodes.length; i++) {
+
+			if (Nodes[i].sColor == "red") {
+
+				if(selectedNets.indexOf(Nodes[i].network) == -1) {
+					selectedNets.push(Nodes[i].network);
+				}
+
+			}
+		}
+	}
+
+	else {
+		for (var i = 0; i < Nodes.length; i++) {
+
+			if (Labels[i].sColor == "red") {
+
+				if(selectedNets.indexOf(Nodes[i].network) == -1) {
+					selectedNets.push(Nodes[i].network);
+				}
+			}
+		}
+
+	}
+
+	for (var i=0; i<selectedNets.length; i++) {
+
+		var lStart = findFirstLink(selectedNets[i],SVG);
+		var lStop  = findLastLink (selectedNets[i],SVG);
+		var nStart = findFirstNode(selectedNets[i],SVG);
+		var nStop  = findLastNode (selectedNets[i],SVG);
+
+		// delete links, nodes, and labels for selected net(s)
+		Links.splice(lStart, (lStop-lStart)+1);	
+		Nodes.splice(nStart, (nStop - nStart)+1); 
+	}
+	
+	start();
+
+	start2();
+
+}
+
+function deleteNetwork(net,SVG) {
+	
+	var Nodes = nodes, Links = links, Labels = labels;
+
+	var lStart = findFirstLink(net,SVG);
+	var lStop  = findLastLink (net,SVG);
+	var nStart = findFirstNode(net,SVG);
+	var nStop  = findLastNode (net,SVG);
+
+	Links.splice(lStart, (lStop-lStart)+1);	
+	Nodes.splice(nStart, (nStop - nStart)+1); 
+
+	start();
+}
+
+function deleteChain() {
+	
+	var Nodes = nodes3;
+	var Links = links3;
+	for (var i = 0; i<Links.length; i++) {
+
+		if (Links[i].sColor == "yellow") {
+			Links.splice(i,1);
+			i--;
+		}
+	}
+
+	for (var j=0; j < Nodes.length; j++) {
+	
+		var parents = getOtherParents(Nodes[j].id, "@#$%");   
+		var children = getOtherChildren(Nodes[j].id, "@#$%"); 
+		if (parents.length == 0 && children.length == 0) {
+			Nodes.splice(j,1);
+			j--;
+		}
+	}
+
+	if (Nodes.length == 1) 
+	{
+	Nodes.pop();
+	}  
+	
+	start3();
+
+}
+
+
+function hideLabels() {
+
+	if (document.getElementById("hideLabels").value == "Hide Labels") {
+
+		linkLabel3.attr("opacity", 0);
+		document.getElementById("hideLabels").value = "Show Labels";
+	} else {
+		linkLabel3.attr("opacity", 0);  
+		document.getElementById("hideLabels").value = "Hide Labels";
+	}
+	start3();
+}
+
+function findFirstNode(net, SVG){
+
+	var Nodes = nodes;
+
+	if (SVG == 2) { 
+		Nodes = nodes2; 
+	}
+
+	for (var i=0; i<Nodes.length; i++) {
+		if (Nodes[i].network == net) {return i;}
+	}
+
+	return -1;
+}
+
+function findLastNode(net, SVG){
+
+	var Nodes = nodes;
+
+	if (SVG == 2) { 
+		Nodes = nodes2; 
+	}
+
+	var count = 0;
+	var i = 0;
+	while (i<Nodes.length) {
+		if (Nodes[i].network == net) {count++;}
+		else if (count > 0) {return (i-1);}
+		i++;
+	}
+
+	if (count > 0) {return i-1;} else {return -1;}
+}
+
+function findFirstLink(net, SVG){
+
+	var Links = links;
+
+	if (SVG == 2) { 
+		Links = links2; 
+	}
+
+	for (var i=0; i<Links.length; i++) {
+		if (Links[i].source.network == net) {return i;}
+	}
+
+	return -1;
+}
+
+function findLastLink(net, SVG){
+
+	var Links = links;
+
+	if (SVG == 2) { 
+		Links = links2; 
+	}
+
+	var count = 0;
+	var i = 0;
+	while (i<Links.length) {
+		if (Links[i].source.network == net) {count++;}
+		else if (count > 0) {return (i-1);}
+		i++;
+	}
+
+	if (count > 0) {return i-1;} else {return -1;}
+}
+
+function calcMean(){
+
+	var Nodes = nodes;
+	var degreeNumbers = [];  
+	for (var h = 0; h < Nodes.length; h++) 
+
+			{  
+			
+				degreeNumbers.push(Nodes[h].degree);  
+			}
+		
+	 
+		var sum = 0;
+			for (var i = 0; i < degreeNumbers.length; i++)
+		{
+			sum += degreeNumbers[i];
+		}
+		
+		var mean = sum / degreeNumbers.length;
+		
+		return mean;
+
+}
+
+function calcStDev(){     
+
+var Nodes = setDegree(nodes);
+var avr = calcMean();
+var degreeNumbs = [];   
+
+var v = 0;
+
+	for (var h = 0; h < Nodes.length; h++) 
+
+			{  
+			
+				degreeNumbs.push(Nodes[h].degree);  
+			}
+			
+	for (var j = 0; j < degreeNumbs.length; j++)
+			{
+				v += Math.pow((degreeNumbs[j] - avr), 2);
+			}
+			
+	var vC = v / degreeNumbs.length;
+	
+	var stDev = Math.sqrt(vC);  
+	
+	var stDevR = Math.round(stDev);  
+	
+	return stDevR; 
+	
+}
+
+
+
+
+function cNodes(nodes){ 
+
+var Nodes = nodes;
+var commonNodes = [];  
+var m = calcMean(Nodes);
+var s = calcStDev(Nodes, m);
+var bGap = m + s;  
+
+
+for (var k = 0; k < Nodes.length; k++)
+	{
+		if(Nodes[k].degree >= bGap)
+		{
+		commonNodes.push(Nodes[k]);
+		}
+		
+	}
+	
+	return commonNodes;
+
+}
+
+function surNodes(){  
+var Nodes = nodes;
+var surpriseNodes = [];
+var m = calcMean(Nodes);
+var s = calcStDev(Nodes, m);
+var sGap = m - s;  
+
+for (var k = 0; k < Nodes.length; k++)
+	{
+		
+		if(Nodes[k].degree <= sGap)
+		{
+		surpriseNodes.push(Nodes[k]);
+		}
+	
+	}
+	
+	return surpriseNodes;
+
+}
+
+function randomChoice(){  
+
+var Nodes = nodes;
+var nNodes = [];
+var n = Nodes.length;
+
+		var c1 = Math.floor(Math.random()*n);  
+		var c2 = Math.floor(Math.random()*n);
+		var c3 = Math.floor(Math.random()*n);
+		var c4 = Math.floor(Math.random()*n);
+		var c5 = Math.floor(Math.random()*n);
+		var c6 = Math.floor(Math.random()*n);
+
+		for (var i = 0; i < Nodes.length; i++)
+		{
+			if(Nodes[i] == c1 || Nodes[i] == c2 || Nodes[i] == c3 || Nodes[i] == c4 || Nodes[i] == c5 || Nodes[i] == c6)
+			{
+				nNodes.push(Nodes[i]);
+			}
+		
+		}
+		
+		return nNodes;
+
+}
+
+
+
+function setAnchor(net){
+
+	var Nodes = nodes;
+	var maxDegree = 0;
+	var Anchor = 0;
+
+	for (var i = 0; i < Nodes.length; i++) {
+
+		Nodes[i].anchor = false;
+		
+		if (Nodes[i].network == net && Nodes[i].degree > maxDegree) {
+			maxDegree = Nodes[i].degree;
+			Anchor = i;
+		}
+	}
+	
+	
+	
+	
+	Nodes[Anchor].anchor = true;
+
+	return Nodes[Anchor];
+}
+
+function setAnchorNodes(net){
+
+	var Nodes = nodes;
+	var maxDegree = 0;
+	var Anchor = 0;
+
+	for (var i = 0; i < Nodes.length; i++) {
+
+		Nodes[i].anchor = false;
+		
+		if (Nodes[i].network == net && Nodes[i].degree > maxDegree) {
+			maxDegree = Nodes[i].degree;
+			Anchor = i;
+		}
+	}
+	
+	
+	
+	
+	Nodes[Anchor].anchor = true;
+
+	return Nodes;
+}
+
+
+
+
+function createAnchorGradient (node) {
+
+	var gradient = svg1.append("svg:defs")
+			.append("svg:radialGradient")
+			.attr("id", function () { return "" + node.id + ".gradient"; })
+			.attr("x1", "0%")
+			.attr("x2", "10%")
+			.attr("x2", "50%")
+			.attr("y2", "100%");
+
+	gradient.append("svg:stop")
+		.attr("offset", "5%")
+		.attr("stop-color", "yellow");
+
+	gradient.append("svg:stop")
+		.attr("offset", "35%")
+		.attr("stop-color", function () { return nodeColorScale(semanticGroupsScale(node.semtype));});
+
+	gradient.append("svg:stop")
+		.attr("offset", "85%")
+		.attr("stop-color", function () { return nodeColorScale(semanticGroupsScale(node.semtype));});
+
+	gradient.append("svg:stop")
+		.attr("offset", "90%")
+		.attr("stop-color", "white");
+
+	gradient.append("svg:stop")
+		.attr("offset", "100%")
+		.attr("stop-color", "orange");
+}
+
+function freezeNetwork(SVG){
+
+    if (SVG == 1) {
+
+	if (document.getElementById("freezeSVG").value=="Freeze") 
+		{ 
+		for (var i = 0; i < nodes.length; i++) {nodes[i].fixed = true;}
+		document.getElementById("freezeSVG").value = "Unfreeze";
+	} 
+	else { 
+		for (var i = 0; i < nodes.length; i++) {nodes[i].fixed = false;}
+		document.getElementById("freezeSVG").value = "Freeze";
+	}
+    }
+
+    if (SVG == 3) {
+
+	if (document.getElementById("freezeSVG3").value=="Freeze") 
+		{ 
+		for (var i = 0; i < nodes3.length; i++) {nodes3[i].fixed = true;}
+		document.getElementById("freezeSVG3").value = "Unfreeze";
+	} 
+
+	else { 
+		for (var i = 0; i < nodes3.length; i++) {nodes3[i].fixed = false;}
+		document.getElementById("freezeSVG3").value = "Freeze";
+	}
+    }
+}
+
+function setDegree(Nodes){
+
+	for (var j = 0; j < Nodes.length; j++) {
+
+		var linkCount = 0;
+		for (var i = 0; i < links.length; i++) {
+
+			if(links[i].source.id == Nodes[j].id || links[i].target.id == Nodes[j].id) {
+				linkCount += 1;
+			}
+		}
+
+		Nodes[j].degree = linkCount;
+	}
+}
+
+function setSKDDegree(){  
+	
+	var Nodes = setAnchorNodes(currentNetwork);  
+	
+	var intNodes = [];
+
+	for (var j = 0; j < Nodes.length; j++) {
+
+		var linkCount = 0;
+		for (var i = 0; i < links.length; i++) {
+
+			if(((links[i].source.id == Nodes[j].id) && Nodes[j].anchor == true)  || ((links[i].target.id == Nodes[j].id) && Nodes[j].anchor == true))  {
+				linkCount += 1;
+			}
+		}
+
+		Nodes[j].SKDdegree = linkCount;
+	}
+	
+	for (var k = 0; k < Nodes.length; k++) {
+	
+	intNodes.push(Nodes[k]); 
+	
+	}
+	
+	return intNodes;
+}
+
+
+function selectAll(SVG) {
+	if (SVG == 1) {
+		for (var i=0; i<nodes.length; i++) {nodes[i].sColor = "red";}
+		start();
+	}
+
+	if (SVG == 2) {
+		for (var i=0; i<labels2.length; i++) {labels2[i].sColor ="red";}
+		start2();
+	}
+
+	if (SVG == 3) {
+		for (var i=0; i<nodes3.length; i++) {nodes3[i].sColor = "red";}
+		start3();
+	}
+
+}
+
+function deleteAllMike(SVG)  
+{  
+
+if (confirm("Are you sure you want to delete this graph?") == false) return;
+if (SVG == 1) {
+		for (var i=0; i<nodes.length; i++) {nodes[i].sColor = "red";}
+		start();
+	}
+
+if (SVG == 1) 
+	{
+		for (var i=0; i<nodes.length; i++) 
+		{
+				if(nodes[i].sColor == "red") 
+				{
+					links.length = 0;	
+					nodes.length = 0; 
+					labels.length = 0;
+					start();
+					return;		
+				}		
+		}
+	}
+		
+}
+
+function deleteAll(SVG) 
+{  
+
+		if (confirm("Are you sure you want to delete this graph?") == false) return;
+		
+		
+
+		if (SVG == 1) 
+			{
+						
+
+							links.splice(0, links.length);	
+							nodes.splice(0, nodes.length);
+							labels.splice(0, labels.length);
+							start();
+					
+				
+			}
+			
+
+		if (SVG == 3) 
+			{
+				
+		  
+							links3.splice(0, links3.length);	
+							nodes3.splice(0, nodes3.length);
+							labels3.splice(0, labels3.length);
+							linkLabels3.splice(0, linkLabels3.length);
+							start3();
+					
+				
+				
+			}
+				
+		
+}
+
+
+
+function clearAll(SVG) {
+
+	if (SVG == 1) {
+		for (var i=0; i<nodes.length; i++) {nodes[i].sColor = "black";}
+		start();
+	}
+
+	if (SVG == 2) {
+		for (var i=0; i<labels2.length; i++) {labels2[i].sColor ="#79B";}
+		start2();
+	}
+
+	if (SVG == 3) {
+		for (var i=0; i<nodes3.length; i++) {nodes3[i].sColor = "black";}
+		start3();
+	}
+}
+
+function selectAllLinks(SVG) {
+
+	if (SVG == 3) {
+		for (var i=0; i<links3.length; i++) {links3[i].sColor = "yellow";}
+		start3();
+	}
+
+}
+
+
+function clearAllLinks(SVG) {
+
+	if (SVG == 3) {
+		for (var i=0; i<links3.length; i++) {links3[i].sColor = "black";}
+		start3();
+	}
+}
+
+function selectNetwork(currentNetwork){
+	
+
+	for (var i=0; i<labels2.length; i++) {
+		if (labels2[i].network == currentNetwork) {
+
+
+	var currentFill = labels2[i].sColor;
+	currentFill = currentFill == "#79B" ? "red" : "#79B";
+			labels2[i].sColor = currentFill;
+		}
+	}
+
+	start2();
+}
+
+function toggleColor(d){
+
+	var currentColor = d.sColor;
+   
+        currentColor = currentColor == "black" ? "red" : "black";
+        d.sColor = currentColor;
+
+	var text = "\"" + d.name + "\" "; 
+	citationSearch();
+}
+
+function linkClick3(d){
+
+	var currentColor = d.sColor;
+   
+        currentColor = currentColor == "black" ? "yellow" : "black";
+        d.sColor = currentColor;
+
+	fillInfoText(d);
+}
+
+
+function fillInfoText(d) 
+{
+
+       var predRow = "";
+       var PMIDRow = "";
+       var sentenceRow = "";
+       var SIDTerms = "";
+
+       document.getElementById("infoText").innerHTML = "";
+       
+       if ($("#c").attr("class") == "trigger") { 
+              document.getElementById("c").click();
+       }
+       
+       for (var i = 0; i < d.predicate.length; i++) {
+              
+              for (var j = 0; j < d.predicate[i].sentence.length; j++) {
+
+
+                     if (d.predicate[i].sentence[j].text == "") { 
+
+                           predRow += "<td colspan='10'>" + d.source.name + "-" + d.predicate[i].label + "-" + d.target.name + "</td>";
+                           PMIDRow += "<td colspan='10'><b>PMID:" + "<a rel='search' target='_blank' "
+                                  + "href='//www.ncbi.nlm.nih.gov/pubmed?cmd=search&term=" + d.predicate[i].sentence[j].PMID 
+                                  + "'>" + d.predicate[i].sentence[j].PMID + "</b></a></td>";
+                           sentenceRow += "<td colspan='10' id='sentence." + d.predicate[i].sentence[j].PMID + "." 
+                           + d.predicate[i].sentence[j].SID;                           
+                           
+                           var n = 0;
+                           var count = 0; 
+                           var target = "sentence." + d.predicate[i].sentence[j].PMID + "." + d.predicate[i].sentence[j].SID;
+
+                           while (n < sentenceRow.lastIndexOf(target)){
+                                  n = sentenceRow.indexOf(target,n)+1;
+                                  count++;
+                           }
+                           count--; 
+                           sentenceRow += "." + count + "' class='sentence'>Fetching sentence...</td>";
+
+                           var connector;
+                           if (i == (d.predicate.length - 1) && j == (d.predicate[i].sentence.length - 1)) {
+                                  connector = "";
+                           } else {
+                                  connector = ",";
+                           }
+
+                           SIDTerms += "'" + d.predicate[i].sentence[j].SID + "'" + connector; 
+
+                     } else { 
+
+                           predRow += "<td colspan='10'>" + d.source.name + "-" + d.predicate[i].label + "-" + d.target.name + "</td>";
+                           PMIDRow += "<td colspan='10'><b>PMID:" +"<a rel='search' target='_blank' "
+                                  + "href='//www.ncbi.nlm.nih.gov/pubmed?cmd=search&term=" + d.predicate[i].sentence[j].PMID 
+                                  + "'>" + d.predicate[i].sentence[j].PMID + "</b></a></td>";
+                           sentenceRow += "<td colspan='10' id='sentence." + d.predicate[i].sentence[j].PMID + "." 
+                            + d.predicate[i].sentence[j].SID + "' class='sentence''>" + d.predicate[i].sentence[j].text + "</td>";
+
+                           if (d.predicate[i].sentence[j].SID != "") {
+
+                                   var connector;
+                                  if (i == (d.predicate.length - 1) && j == (d.predicate[i].sentence.length - 1)) {
+                                         connector = "";
+                                  } else {
+                                         connector = ",";
+                                  }
+                                  SIDTerms += "'" + d.predicate[i].sentence[j].SID + "'" + connector;
+                           }
+
+                     }
+
+              } 
+
+       } 
+
+       document.getElementById("infoText").innerHTML += "<tr>" + predRow + "</tr>";
+       document.getElementById("infoText").innerHTML += "<tr>" + PMIDRow + "</tr>";
+       document.getElementById("infoText").innerHTML += "<tr>" + sentenceRow + "</tr>";
+       
+       if (d.predicate.length > 0 && SIDTerms != "") { 
+
+           querySemMedDB2(SIDTerms, function(data){ 
+
+                     for (var k = 0; k < data.length; k++) {
+                           var target = "sentence." + data[k][1] + "." + data[k][0];
+                           var n = 0;
+                           var count = 0;
+                           var infoText = document.getElementById("infoText").innerHTML;
+
+                           while (n < infoText.lastIndexOf(target)){
+                                  n = infoText.indexOf(target,n)+1;
+                                  count++;
+                           }
+                           
+                           for (var i = 0; i < count; i++) {
+                                  var targetCell = document.getElementById(target+"."+i); 
+                                  targetCell.innerHTML = data[k][4];  
+                           }
+                     }
+                     shiftChains();
+           });
+           
+       } else shiftChains();
+}
+
+
+
+function linkClick(thisLink) 
+{
+	
+	
+	var width = $(document).width();
+    var height = $(document).height();
+	
+	
+	var sourceNode = { id:"", oldId:[""], symbol:""};  //   MAKE IT A GENERIC NETWORK 
+	
+	sourceNode.id = thisLink.source.symbol;
+	sourceNode.oldId[0] = thisLink.source.id;
+	sourceNode.symbol = thisLink.source.symbol;
+	sourceNode.name = thisLink.source.name;
+	sourceNode.semtype = thisLink.source.semtype;
+	sourceNode.visible = thisLink.source.visible;
+	sourceNode.novel = thisLink.source.novel;
+	sourceNode.sColor = "black";
+	sourceNode.anchor = thisLink.source.anchor;
+	sourceNode.fixed = true;
+
+	var nodeCheck = findNode(sourceNode.id, nodes3);
+	
+	if (nodeCheck == -1) {nodes3.push(sourceNode);}
+	else {
+		if (nodes3[nodeCheck].oldId.indexOf(sourceNode.oldId[0]) == -1) nodes3[nodeCheck].oldId.push(sourceNode.oldId[0]);
+	}
+
+	var targetNode = { id:" ", oldId:[" "], symbol:" "};
+	
+	targetNode.id = thisLink.target.symbol;
+	targetNode.oldId[0] = thisLink.target.id;
+	targetNode.symbol = thisLink.target.symbol;
+	targetNode.name = thisLink.target.name;
+	targetNode.semtype = thisLink.target.semtype;
+	targetNode.visible = thisLink.target.visible;
+	targetNode.novel = thisLink.target.novel;
+	targetNode.sColor = "black";
+	targetNode.anchor = thisLink.target.anchor;
+	sourceNode.fixed = true;
+
+	nodeCheck = findNode(targetNode.id, nodes3);
+	
+	
+	if (nodeCheck == -1) {nodes3.push(targetNode);}
+	else {
+
+		if (nodes3[nodeCheck].oldId.indexOf(sourceNode.oldId[0]) == -1) 
+		{
+			nodes3[nodeCheck].oldId.push(targetNode.oldId[0]);	
+		}
+	}
+	
+			function findNode(ID,Nodes) {	
+			
+		for (var i = 0; i < Nodes.length; i++) {	
+			if (Nodes[i].id == ID) {return i;}
+		}
+		
+		return -1;
+	}
+
+	var link1 = { source:"", target:"", sColor:"black",
+				predicate:[{label:"", sentence:[{PMID:"", SID:"", sNumber:"", abti:"", text:""}] }] };
+
+	link1.source = nodes3[findNode(sourceNode.id, nodes3)];
+	link1.target = nodes3[findNode(targetNode.id, nodes3)];
+	link1.predicate = thisLink.predicate;
+
+	var linkFound = findLink(link1, links3);
+	if (linkFound == -1) { 
+
+		links3.push(link1);
+
+	} 
+	else { 
+		
+		var predicateFound = findPredicate(link1.predicate[0], linkFound);
+
+		if (predicateFound != -1 ) { 
+
+			for (var k = 0; k < link1.predicate[0].sentence.length; k++) {
+
+				if (links3[linkFound].predicate[predicateFound].sentence.indexOf(link1.predicate[0].sentence[k]) == -1)
+					links3[linkFound].predicate[predicateFound].sentence.push(link1.predicate[0].sentence[k]);
+			}
+		}
+
+		else {
+
+			if (links3[linkFound].predicate.indexOf(link1.predicate[0]) == -1)
+				links3[linkFound].predicate.push(link1.predicate[0]);
+		}
+	}
+
+	var buffer = 40;
+	var bufferX = width / 4;
+	var bufferPlus = height / 2;
+	var xNotch = 250; 
+	var yNotch = 70;  
+
+	var sourceChildren = getOtherChildren(sourceNode.id, targetNode.id);
+	var targetParents = getOtherParents(targetNode.id, sourceNode.id);
+	var sourceParents = getOtherParents(sourceNode.id,"@#$");
+	var targetChildren = getOtherChildren(targetNode.id,"@#$");
+
+	if (sourceChildren.length == 0 && targetParents.length == 0) {
+
+		if (sourceParents.length == 0 && targetChildren.length == 0) {  
+
+			if (nodes3.length == 2) { 
+				sourceNode.fixed = true;
+				targetNode.fixed = true;
+				sourceNode.x = bufferX;
+				sourceNode.y = buffer;
+				targetNode.x = bufferX + xNotch;   
+				targetNode.y = buffer;
+			} else {  
+				sourceNode.fixed = true;
+				targetNode.fixed = false;
+				sourceNode.x = bufferX;
+				sourceNode.y = bufferPlus;
+				targetNode.x = bufferX + xNotch;
+				targetNode.y = bufferPlus;
+			}
+
+		} else if (sourceParents.length == 0 && targetChildren.length > 0) {  // if the source node has no parents, but the target node has children...
+
+			sourceNode.fixed = true;
+			var target = nodes3[findNode(targetNode.id,nodes3)];
+			sourceNode.x = target.x - xNotch;
+			sourceNode.y = target.y + targetParents.length*yNotch;
+
+		} else if (sourceParents.length > 0 && targetChildren.length == 0) {
+
+			targetNode.fixed = true;
+			var source = nodes3[findNode(sourceNode.id,nodes3)];
+			targetNode.x = source.x + xNotch;
+			targetNode.y = source.y + sourceChildren.length*yNotch;
+
+		} else {
+			
+			//do nothing already in position
+		}
+
+
+	} else if (sourceChildren.length == 0 && targetParents.length > 0) {
+
+		sourceNode.fixed = true;
+		targetNode.fixed = true;
+		var target = nodes3[findNode(targetNode.id,nodes3)];
+		sourceNode.x = target.x - xNotch;
+		sourceNode.y = target.y + targetParents.length*yNotch;
+
+	} else if (sourceChildren.length > 0 && targetParents.length == 0) {
+
+		targetNode.fixed = true;
+		sourceNode.fixed = true;
+		var source = nodes3[findNode(sourceNode.id,nodes3)]; 
+		targetNode.x = source.x + xNotch;
+		targetNode.y = source.y + sourceChildren.length*yNotch
+
+	} 
+
+
+	start3();
+
+	function findPredicate(predicate1, linkIndex) {
+
+		for (var j = 0; j < links3[linkIndex].predicate.length; j++ ) {
+
+			if (links3[linkIndex].predicate[j].label == predicate1.label) {
+
+				return i;
+			}
+		}
+
+
+		return -1;
+	}
+	
+	
+
+	function findLink(link1, Links) {
+
+		for (var i = 0; i < Links.length; i++) {
+			if (Links[i].source == link1.source && Links[i].target == link1.target) {	return i;}  
+		}
+
+		return -1;
+	}
+
+
+	
+		
+}
+
+
+
+function citationSearch(){
+	
+	var search = document.getElementById("searchTerm").value + " " + searchLimits;
+	var xml = getPubMedXML(search);
+	var query = "";
+	
+	for (var i = 0; i < xml.length; i++) {
+		query += "'" + xml[i] + "',";
+	}
+	query = query.substring(0,query.length-1); 
+	document.getElementById("resultPanel").innerHTML = "Searching...";
+	
+	if(xml.length == 0)
+	{
+	document.getElementById("resultPanel").innerHTML = "No citations, please try another search";
+	searchResult.splice(0, searchResult.length);  
+	}
+
+	else if ((xml.length > 0 ) && (xml.length < 50000000)) {
+	    querySemMedDB(query,function(rawData){
+
+	    var data = JSON.parse(rawData);
+		searchResult.splice(0,searchResult.length);
+		for (var i = 0; i < data.length; i++) {
+			searchResult.push(data[i]);
+		}
+		document.getElementById("resultPanel").innerHTML = "Choose Randomization Type";
+		
+	    });
+	} else {
+		document.getElementById("resultPanel").innerHTML="Too many predications. Refine your search.";
+	}
+	
+
+	altAnchorCui = "";
+	
+}
+
+
+function getPubMedXML(query){
+	
+	var search = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?term=" + query;
+	if (window.XMLHttpRequest)
+		{// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+		}
+	else
+		{// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+		}
+
+	xmlhttp.open("GET",search,false);
+	xmlhttp.send();
+	xmlDoc=xmlhttp.responseXML;
+
+	var IDs = [];
+	var x=xmlDoc.getElementsByTagName("Id");
+	for(var i=0;i<x.length;i++){
+	  IDs[i] = x[i].childNodes[0].nodeValue;
+  	} 
+
+	return IDs;
+}
+
+function querySemMedDB(query, setFxn) {
+
+    $.post("./servlet/SemMedDBServlet","qry="+query,function(data,status){
+ //    $.post("predication.php","qry="+query,function(data,status){
+	    setFxn(data);
+	  });
+
+	return 1;
+}
+
+
+function getOtherParents(ID, sourceID){
+
+	var parents = [" "];
+	parents.pop();
+
+	for (var i=0; i<links3.length; i++) {
+
+		if ( (links3[i].target.id == ID) && (links3[i].source.id != sourceID) 
+			&& (parents.indexOf(links3[i].source.id) == -1) ) {
+			parents.push(links3[i].source.id);
+		}
+	}
+
+	return parents;
+}
+
+function getOtherChildren(ID, childID){
+
+	var children = [" "];
+	children.pop();
+
+	for (var i=0; i<links3.length; i++) {
+
+		if ( (links3[i].source.id == ID) && (links3[i].target.id != childID) 
+			&& (children.indexOf(links3[i].target.id) == -1) ) {
+			children.push(links3[i].target.id);
+		}
+	}
+
+	return children;
+}
+
+
+
+function querySemMedDB2(SIDs, setFxn) {//PMIDs,
+
+	// Send a http request with AJAX
+	var xhr = $.ajax({
+	// url: 'sentence.php',
+	url: './servlet/SemMedDBServlet',
+	data: 'SIDs='+SIDs,  //'PMIDs='+PMIDs+'&
+	dataType: 'json',
+	success: function(data, status, xhr) {
+		setFxn(data);
+		} ,
+	error: function(data){
+
+		return -1;  		}
+	});
+
+	return 1;
+}
+
+
+
+
+function redraw() {
+
+	var point = d3.event.translate;
+	svg1.attr("transform","translate(" + point + ")" + " scale(" + d3.event.scale + ")");
+
+}
+
+function redraw3() {
+
+	var point = d3.event.translate;
+	svg3.attr("transform","translate(" + point + ")" + " scale(" + d3.event.scale + ")");
+
+}
+
+
+function moveSVG() {
+
+	var point = d3.mouse(this);
+	point[0] = (point[0] - width/2);
+	point[1] = (point[1] - height/2);
+	svg1.attr("transform", "translate(" + point + ")" );
+}
+
+function moveSVG3() {
+
+	var point = d3.mouse(this);
+	point[0] = (point[0] - width/2);
+	point[1] = (point[1] - height/2);
+	svg3.attr("transform", "translate(" + point + ")" );
+}
+
+
+function resetClick() {
+	
+	document.getElementById("openNet").disabled = "disabled";
+	document.getElementById("searchTerm").value = "";
+	document.getElementById("openNet").title="Search required.";
+}
+
+function getFile(){
+	document.getElementById("upfile").click();
+}
+
+
+function networkInSVG1(netID){
+	
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].network == netID) return true;
+	}
+	return false;
+}
+
+function fillSeedSelector(network) {
+
+	var nodeList = network.nodes.sort(function(a, b) { return d3.descending(a.weight, b.weight); });
+
+	var selector = document.getElementById("seedSelector");
+	while (selector.hasChildNodes()) { 	// remove all previous options
+	    selector.removeChild(selector.lastChild);
+	}
+
+	nodeList.forEach(function (d, i){
+	
+		if (d.novel == true) {
+		    var option = document.createElement('option');
+			option.value = d.id;
+			option.innerHTML = d.name.substr(0,30) + " (links: " + d.weight + ")";
+			selector.appendChild(option);
+		}
+		
+	});
+}
+
+
+
+
+
+function getSelectedNetwork() {
+	
+	var net = document.getElementById('networkSelector').value;
+
+	for (var i = 0; i < networks.length; i++) {
+
+		if (networks[i].id == net) return networks[i];
+	}
+	
+	return null;
+}
+
+function getSelectedSeed() {
+	
+	var selected = document.getElementById('seedSelector').value;
+	var network = getSelectedNetwork();
+	for (var i = 0; i < network.nodes.length; i++) {
+
+		if (network.nodes[i].id == selected) return network.nodes[i];
+	}
+	
+	return null;
+}
+
+
+
+
+
+
+
+
+function findPredication(subj, pred, obj, array1) {
+
+	for (var i = 0; i < array1.length; i++) {
+	
+		if ( (array1[i].source == subj) && (array1[i].target == obj) 
+		&& (array1[i].predicate == pred) ) 	return i;
+		
+	}
+	
+	return -1; // not found
+
+}
+
+
+
+function shiftChains() {
+	
+    var s2 = $(".slider3");
+    var rect = s2[0].getBoundingClientRect();
+    var s2Bottom = rect.bottom;
+    if (s2Bottom < 205){
+    	document.getElementById("chains").style.top = "205px";
+    	document.getElementById("b").style.top = "205px";
+    }
+    else {
+        var s2 = $(".slider3");
+        var rect = s2[0].getBoundingClientRect();
+        document.getElementById("chains").style.top = rect.bottom + "px";
+        document.getElementById("b").style.top = rect.bottom + "px";
+    }	
+}
+
+function note(msg){
+	document.getElementById("note").innerHTML += msg;
+}
+
+
+Ui.P3 = function() {
+};
+
+Ui.P3.prototype = Object.create(Ui.prototype);
+
+Ui.P3.prototype.createElement = function() {
+  Ui.prototype.createElement.apply(this, arguments);
+  this.addComponent(new Ui.Arc({
+    arcWidth: this.width/5
+  }));
+  this.merge(this.options, {arcWidth: this.width/5});
+  
+  this.addComponent(new Ui.Text());
+  var arc = new Ui.El.Arc(this.options);
+  arc.setAngle(this.options.anglerange);
+  this.el.node.appendChild(arc.node);
+  this.el.node.setAttribute("class", "p3");
+};
+
+    for (var i = 1; i < 6; i++) {
+        Array.prototype.slice.call(document.getElementsByClassName('preset' + i)).forEach(function(el) {
+            new Knob(el, new Ui['P' + i]());
+        })
+    }
+
+</script>
+<svg>
+    <filter id="dropshadow" height="150%" width="150%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+        <feOffset dx="0" dy="3" result="offsetblur"/>
+        <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+    <filter id="dropshadow2" height="120%" width="120%">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+        <feOffset dx="0" dy="2" result="offsetblur"/>
+        <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+    </filter>
+    <filter id='inner-shadow'>
+
+        <!-- Shadow Offset -->
+        <feOffset
+                dx='0'
+                dy='5'
+                />
+
+        <!-- Shadow Blur -->
+        <feGaussianBlur
+                stdDeviation='5'
+                result='offset-blur'
+                />
+
+        <!-- Invert the drop shadow
+to create an inner shadow -->
+        <feComposite
+                operator='out'
+                in='SourceGraphic'
+                in2='offset-blur'
+                result='inverse'
+                />
+
+        <!-- Color & Opacity -->
+        <feFlood
+                flood-color='black'
+                flood-opacity='0.75'
+                result='color'
+                />
+
+        <!-- Clip color inside shadow -->
+        <feComposite
+                operator='in'
+                in='color'
+                in2='inverse'
+                result='shadow'
+                />
+
+        <!-- Put shadow over original object -->
+        <feComposite
+                operator='over'
+                in='shadow'
+                in2='SourceGraphic'
+                />
+    </filter>
+</svg>
+
+</body>
+
+</html>

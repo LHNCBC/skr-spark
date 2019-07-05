@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<head>
+<title>Spark Instructions</title>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+<style>
+
+body {
+background-color: lightCyan;
+margin-left: 5%; 
+margin-right: 5%;
+margin-top: 5%;
+margin-bottom: 5%;
+}
+
+.container {width:900px;
+margin-left: auto;
+margin-right: auto;
+width: 70%;
+padding:15px;
+border:1px solid #cccccc;
+background:#ffffff; 
+}
+
+#instList {
+font-family: "Arial";
+font-size: 18px;
+list-style-type: none;
+}
+
+#instListLi {
+font-family: "Arial";
+font-size: 18px;
+list-style-type: none;
+margin:0 20px 20px 0;
+color: DarkSlateGray;
+}
+
+h2 {
+font-family: "Georgia";
+font-size: 24px;
+color: DarkBlue;
+}
+
+h1 {
+font-family: "Georgia";
+font-size: 24px;
+color: DarkBlue;
+}
+
+p {
+font-family: "Arial";
+font-size: 18px;
+color: DarkSlateGray;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Spark Knowledge Discovery Tool Prototype</h1>
+<p>The Spark Knowledge Discovery Tool leverages findings from research to assist users in discovering new information (1). 
+Serendipitous Knowledge Discovery (SKD), a widely-researched information-seeking behavior, is the coincidental discovery of useful information.
+The graphs produced by this tool consist of assertions, in the form of subject-predicate-object semantic predications.  These predications, a product of SemRep (2), are extracted from <a href="http://www.pubmed.gov">PubMed</a> citations.</p>
+
+<br></br>
+
+<h2>Basic Instructions:</h2>
+
+<ul id="instList">
+
+<li id="instListLi">Enter a query in the text box on the upper-left, by Enter Concept(s), and click Search.</li>
+
+<li id="instListLi">Click on one of the five randomization options to the right (the All, Common, or Rare, buttons, or from one of the drop-down  menus).  This will produce an SKD graph of manageable size, composed of semantic predications in links and nodes.</li>
+ 
+<li id="instListLi">Click on a link between nodes in the graph to view the original text and PubMed access; click again to hide them.</li>
+ 
+<li id="instListLi">Hover the cursor over a link to just see its full predication.</li>
+
+<li id="instListLi">Double-Click on a link to transfer its predication to the workspace on the right.  Again, access the sentence by clicking on a link, or the full predication by hovering the cursor over the link, in the same fashion.</li>
+ 
+<li id="instListLi">Manipulate graph elements by dragging nodes.</li>
+
+<li id="instListLi">Use the buttons on the bottom to discard, save, or reopen graphs.  Click on a predication's link in the workspace and click Delete Predication to delete a single predication.</li>
+</ul>
+
+<br></br>
+
+<footer>
+  <p>(1) See Workman, et al., <a href="http://onlinelibrary.wiley.com/doi/10.1002/asi.22999/abstract">Framing serendipitous information-seeking behavior for facilitating literature-based discovery: A proposed model</a> JASIST March 2014 65(3): 501-512. </p>
+  <p>(2) See Rindflesch and Fiszman, <a href="http://skr.nlm.nih.gov/papers/references/semspec_jbi.11.ss.pdf">The interaction of domain knowledge and linguistic structure in natural language processing: interpreting hypernymic propositions in biomedical text</a> J Biomed Inform Dec 2003 36(6): 462-477. </p>
+</footer> 
+
+</div>
+
+</body>
+</html>
